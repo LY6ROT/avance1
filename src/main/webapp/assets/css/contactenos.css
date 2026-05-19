@@ -1,0 +1,222 @@
+/* --- SECCIÓN DE CONTACTO Y DETALLES --- */
+
+/* Banner Superior */
+.img-gym {
+    height: 45vh;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.img-overlay {
+    background: rgba(0, 0, 0, 0.6);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.img-overlay h1 {
+    font-family: 'Anton', sans-serif;
+    font-size: 3.5rem;
+    color: #FFD700;
+    text-transform: uppercase;
+}
+
+.sede {
+    font-size: 1.2rem;
+    color: white;
+    margin-top: 10px;
+    letter-spacing: 2px;
+}
+
+/* Contenedor Principal */
+.contenedor-detalle {
+    padding: 60px 10%;
+    background-color: #121212;
+}
+
+.info-general {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 40px;
+    align-items: start;
+}
+
+/* Columna de Texto */
+.descripcion h2 {
+    font-family: 'Anton', sans-serif;
+    color: white;
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.descripcion p {
+    color: #ccc;
+    line-height: 1.8;
+    margin-bottom: 30px;
+}
+
+.lista-servicios {
+    list-style: none;
+}
+
+.lista-servicios li {
+    color: white;
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+}
+
+.lista-servicios i {
+    color: #FFD700;
+    margin-right: 15px;
+    font-size: 1.3rem;
+    width: 25px;
+}
+
+/* Columna del Formulario / Horarios */
+.horarios {
+    background-color: #1a1a1a;
+    padding: 35px;
+    border-radius: 15px;
+    border: 1px solid #333;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.horarios h3 {
+    color: #FFD700;
+    font-family: 'Anton', sans-serif;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+}
+
+/* Estilos de los Inputs del Formulario */
+input[type="text"], 
+input[type="email"], 
+textarea {
+    transition: all 0.3s ease;
+}
+
+input:focus, textarea:focus {
+    border-color: #FFD700 !important;
+    outline: none;
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
+}
+
+/* Botón de Enviar (Reutilizando tu clase boton_detalle) */
+.boton_detalle {
+    background-color: #FFD700;
+    color: black;
+    font-weight: bold;
+    padding: 15px;
+    width: 100%;
+    border-radius: 8px;
+    text-transform: uppercase;
+    transition: 0.3s;
+    margin-top: 10px;
+}
+
+.boton_detalle:hover {
+    background-color: white;
+    transform: translateY(-3px);
+}
+
+/* Responsivo para celulares */
+@media (max-width: 768px) {
+    .info-general {
+        grid-template-columns: 1fr;
+    }
+    
+    .img-overlay h1 {
+        font-size: 2.5rem;
+    }
+}
+
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    border: 1px solid #333;
+    background: #1a1a1a;
+    color: white;
+    
+    /* ESTO ES LO QUE QUITA LA OPCIÓN DE EXTENDER */
+    resize: none; 
+    
+    /* Opcional: define una altura fija para que no se mueva */
+    height: 120px; 
+}
+
+
+/* --- 9. SECCIÓN CONTACTO Y FORMULARIOS --- */
+.info-contacto {
+    background: var(--oscuro-tarjetas);
+    padding: 25px 20px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    border-left: 4px solid var(--dorado);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    transition: var(--transicion-suave);
+}
+
+.info-contacto:hover {
+    transform: translateX(10px);
+    background: #1f1f1f;
+}
+
+.info-contacto i {
+    font-size: 2rem;
+    color: var(--dorado);
+}
+
+.formulario-caja {
+    background: var(--oscuro-tarjetas);
+    padding: 40px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+}
+
+/* Redefiniendo los inputs de Bootstrap para modo oscuro */
+.form-control-dark {
+    background-color: #0d0d0d !important;
+    border: 1px solid #333 !important;
+    color: white !important;
+    padding: 15px !important;
+    border-radius: 10px !important;
+    transition: var(--transicion-suave);
+}
+
+.form-control-dark:focus {
+    background-color: #000 !important;
+    border-color: var(--dorado) !important;
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.3) !important;
+}
+
+.form-control-dark::placeholder {
+    color: #666 !important;
+}
+
+/* Arreglo específico para el dropdown (Select) en modo oscuro */
+select.form-control-dark {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23FFD700' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e") !important;
+}
+select.form-control-dark option {
+    background-color: #0d0d0d;
+    color: white;
+}
+
+.mapa-section {
+    line-height: 0; /* Quita el espacio extra debajo del iframe */
+}

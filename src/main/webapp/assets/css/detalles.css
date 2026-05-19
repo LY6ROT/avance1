@@ -1,0 +1,250 @@
+/* --- ESTILOS PROFESIONALES PARA DETALLES GYMMAX --- */
+
+:root {
+    --dorado: #FFD700;
+    --oscuro-puro: #0a0a0a;
+    --oscuro-card: #161616;
+    --gris-texto: #a0a0a0;
+    --transicion: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+/* 1. Hero Section con Efecto Parallax y Overlay Gradiente */
+.img-gym {
+    height: 60vh;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed; /* Parallax */
+    position: relative;
+    display: flex;
+    align-items: flex-end; /* Texto abajo para estilo moderno */
+    overflow: hidden;
+}
+
+.img-overlay {
+    background: linear-gradient(to top, var(--oscuro-puro) 10%, transparent 90%);
+    width: 100%;
+    padding: 60px 10%;
+    text-align: left; /* Alineación a la izquierda se ve más elegante */
+}
+
+.img-overlay h1 {
+    font-family: 'Anton', sans-serif;
+    font-size: 5rem;
+    color: var(--dorado);
+    text-transform: uppercase;
+    margin: 0;
+    line-height: 0.9;
+    letter-spacing: -2px;
+    animation: slideUp 0.8s ease-out;
+}
+
+.sede {
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 400;
+    letter-spacing: 5px;
+    margin-top: 10px;
+    opacity: 0.8;
+}
+
+/* 2. Layout Grid Principal */
+.contenedor-detalle {
+    background-color: var(--oscuro-puro);
+    padding: 80px 10%;
+    min-height: 100vh;
+}
+
+.info-general {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+    gap: 60px;
+}
+
+/* 3. Columna de Información (Estilo Limpio) */
+.descripcion h2 {
+    font-family: 'Anton', sans-serif;
+    color: white;
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+    position: relative;
+}
+
+.descripcion h2::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    width: 60px;
+    height: 4px;
+    background: var(--dorado);
+}
+
+.descripcion p {
+    color: var(--gris-texto);
+    font-size: 1.1rem;
+    line-height: 1.9;
+    margin-bottom: 40px;
+}
+
+/* Grilla de Servicios con Iconos Animados */
+.lista-servicios {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    list-style: none;
+}
+
+.lista-servicios li {
+    background: var(--oscuro-card);
+    padding: 20px;
+    border-radius: 12px;
+    color: white;
+    font-weight: 500;
+    border: 1px solid #222;
+    transition: var(--transicion);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.lista-servicios li:hover {
+    transform: translateY(-5px);
+    border-color: var(--dorado);
+    box-shadow: 0 10px 20px rgba(255, 215, 0, 0.1);
+}
+
+.lista-servicios i {
+    color: var(--dorado);
+    font-size: 1.5rem;
+}
+
+/* 4. Widget de Planes (Glassmorphism Sticky) */
+.horarios {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    padding: 40px;
+    border-radius: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    position: sticky;
+    top: 40px;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+}
+
+.horarios h3 {
+    font-family: 'Anton', sans-serif;
+    color: white;
+    font-size: 1.8rem;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+/* Filas de Planes */
+.plan-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 15px;
+    margin-bottom: 15px;
+    transition: var(--transicion);
+    cursor: pointer;
+}
+
+.plan-item:hover {
+    background: rgba(255, 215, 0, 0.1);
+    transform: scale(1.02);
+}
+
+.plan-info p { margin: 0; }
+.plan-nombre { color: white; font-weight: 700; font-size: 1.1rem; }
+.plan-sub { color: var(--gris-texto); font-size: 0.85rem; }
+.plan-precio { color: var(--dorado); font-weight: 900; font-size: 1.2rem; }
+
+/* Botón Call to Action (CTA) */
+.boton_detalle {
+
+    width: 100%;
+    padding: 20px;
+    background: var(--dorado);
+    color: black;
+    border: none;
+    border-radius: 50px; /* Botón redondeado se ve más premium */
+    font-weight: 800;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: var(--transicion);
+    margin-top: 20px;
+    box-shadow: 0 10px 20px rgba(255, 215, 0, 0.3);
+}
+
+.boton_detalle:hover {
+    background: white;
+    transform: translateY(-3px);
+    box-shadow: 0 15px 30px rgba(255, 255, 255, 0.2);
+}
+
+/* Animaciones */
+@keyframes slideUp {
+    from { transform: translateY(50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .info-general { grid-template-columns: 1fr; }
+    .horarios { position: static; }
+    .img-overlay h1 { font-size: 3.5rem; }
+}
+
+/* --- 11. DETALLE DE SEDE --- */
+.hover-dorado {
+    transition: var(--transicion-suave);
+    cursor: pointer;
+}
+
+.hover-dorado:hover {
+    border-color: var(--dorado) !important;
+    background: rgba(255, 215, 0, 0.05);
+}
+
+.x-small {
+    font-size: 0.75rem;
+}
+
+/* Para que la caja de planes no se mueva al bajar el scroll en PC */
+@media (min-width: 992px) {
+    .sticky-top {
+        z-index: 10;
+    }
+}
+
+/* Banner de Detalle */
+.img-gym {
+    height: 60vh;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed; /* Efecto Parallax */
+    position: relative;
+    margin-top: 0; /* Asegura que empiece justo debajo o detrás del header */
+}
+
+/* Efecto de selección de planes */
+.plan-item-card:hover {
+    border-color: #FFD700 !important;
+    background: rgba(255, 215, 0, 0.05);
+}
+
+.plan-item-card.selected {
+    border-color: #FFD700 !important;
+    background: rgba(255, 215, 0, 0.15);
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
+}
+
+/* Ajuste del Sticky para que no se choque con el menú */
+.sticky-top {
+    z-index: 10;
+}
+

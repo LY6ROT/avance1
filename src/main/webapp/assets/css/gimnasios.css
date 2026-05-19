@@ -1,0 +1,344 @@
+/* --- CONFIGURACIÓN DE GRILLA Y CONTENEDORES --- */
+.fondo2 {
+    background-color: #121212;
+    padding: 40px 5%;
+    min-height: 100vh;
+}
+
+.titulo-seccion {
+    border-left: 5px solid #FFD700;
+    padding-left: 15px;
+    margin: 40px 0 25px 0;
+}
+
+.titulo-seccion h2 {
+    font-family: 'Anton', sans-serif;
+    font-size: 2rem;
+    color: white;
+    letter-spacing: 1px;
+}
+
+/* --- BUSCADOR --- */
+.contenedor-buscador {
+    margin-bottom: 50px;
+    display: flex;
+    justify-content: center;
+}
+
+.caja-input {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+}
+
+.icono-busqueda {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #FFD700;
+    font-size: 1.2rem;
+}
+
+#buscador-input {
+    width: 100%;
+    padding: 15px 20px 15px 55px;
+    border-radius: 30px;
+    border: 2px solid #333;
+    background-color: #1a1a1a;
+    color: white;
+    font-size: 1rem;
+    outline: none;
+    transition: 0.3s;
+}
+
+#buscador-input:focus {
+    border-color: #FFD700;
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
+}
+
+/* --- TARJETAS DE GIMNASIOS (CARDS) --- */
+.contenedor-gimnasios {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 30px;
+    margin-bottom: 50px;
+}
+
+.card-gimnasio {
+    background-color: #1a1a1a;
+    border-radius: 15px;
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+    border: 1px solid #333;
+    display: flex;
+    flex-direction: column;
+}
+
+.card-gimnasio:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    border-color: #FFD700;
+}
+
+.card-imagen {
+    height: 200px;
+    overflow: hidden;
+}
+
+.card-imagen img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s;
+}
+
+.card-gimnasio:hover .card-imagen img {
+    transform: scale(1.1);
+}
+
+.card-contenido {
+    padding: 20px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.pf_titulo {
+    font-family: 'Anton', sans-serif;
+    font-size: 1.4rem;
+    color: #FFD700;
+    margin-bottom: 10px;
+}
+
+.parrafo_1 {
+    font-size: 0.9rem;
+    color: #ccc;
+    line-height: 1.4;
+    margin-bottom: 15px;
+}
+
+/* --- TAGS DE UBICACIÓN --- */
+.card-tags {
+    margin-bottom: 20px;
+}
+
+.tag-titulo {
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: white;
+    margin-bottom: 8px;
+}
+
+.lista-tags {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.lista-tags li {
+    background-color: #333;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    color: #FFD700;
+}
+
+.lista-tags i {
+    margin-right: 5px;
+}
+
+/* --- BOTÓN DE DETALLE --- */
+.card-accion {
+    
+    margin-top: auto;
+}
+
+.boton_detalle {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    text-align: center;
+    background-color: #FFD700;
+    color: black;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 8px;
+    transition: 0.3s;
+}
+
+.boton_detalle:hover {
+    background-color: white;
+}
+
+/* --- CARRUSEL --- */
+.carousel-container {
+    width: 100%;
+    overflow: hidden;
+    background: #000;
+}
+
+.carousel-track {
+    display: flex;
+    animation: scroll 40s linear infinite;
+}
+
+.carousel-track img {
+    width: 300px;
+    height: 200px;
+    object-fit: cover;
+    opacity: 0.6;
+    transition: opacity 0.3s;
+}
+
+.carousel-track img:hover {
+    opacity: 1;
+}
+
+@keyframes scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-100%); }
+}
+
+
+/* Contenedor del Carrusel */
+.carousel-container {
+    width: 100%;
+    height: 350px; /* Ajusta esta altura a tu gusto */
+    overflow: hidden;
+    background: #000;
+}
+
+.carousel-track {
+    display: flex;
+    height: 100%;
+    animation: scroll 40s linear infinite;
+}
+
+.carousel-track img {
+    width: auto; /* Evita que se estiren a lo ancho */
+    height: 100%; /* Que llenen siempre la altura */
+    object-fit: cover; /* Recorta la imagen proporcionalmente si es necesario */
+    flex-shrink: 0;
+}
+
+
+.estilos_descripcion {
+    height: 60vh; /* Altura del banner principal */
+    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
+                url('ruta-de-tu-imagen.jpg'); /* Fondo oscuro para que resalte la letra */
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 0 10%;
+}
+
+.estilos_descripcion h1 {
+    color: #FFD700; /* Dorado GymMax */
+    font-family: 'Anton', sans-serif; /* La fuente impactante */
+    font-size: 3.5rem; /* Tamaño grande */
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    text-shadow: 2px 2px 10px rgba(0,0,0,0.8); /* Sombra para legibilidad */
+}
+
+/* --- ESTILOS DEL BANNER PRINCIPAL (HERO SECTION) --- */
+.estilos_descripcion {
+    position: relative; /* Necesario para las capas superpuestas */
+    height: 70vh; /* Ocupa el 70% de la altura de la pantalla */
+    width: 100%;
+    overflow: hidden; /* Oculta el desbordamiento durante la animación */
+    background-color: #000; /* Fondo de seguridad negro */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+}
+
+/* La imagen de fondo con efecto interactivo */
+.interactivo-banner::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Ruta a tu imagen minimalista de gimnasio */
+    background-image: url('https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=2070&auto=format&fit=crop'); 
+    background-size: cover;
+    background-position: center;
+    transition: transform 0.6s ease-out; /* Velocidad de la interacción */
+    z-index: 1; /* Detrás del texto */
+}
+
+/* EFECTO INTERACTIVO: El fondo se agranda suavemente al pasar el mouse */
+.interactivo-banner:hover::before {
+    transform: scale(1.1); /* Agranda la imagen un 10% */
+}
+
+/* Capa oscura superpuesta (Overlay) para legibilidad */
+.banner-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 100%);
+    z-index: 2; /* Sobre la imagen, bajo el texto */
+}
+
+/* Contenedor del texto */
+.banner-content {
+    position: relative;
+    z-index: 3; /* Sobre todo lo demás */
+    max-width: 800px;
+    padding: 0 20px;
+}
+
+/* Estilo del título principal (Grande y Chevere) */
+.banner-content h1 {
+    font-family: 'Anton', sans-serif; /* Usamos la fuente impactante */
+    font-size: 4rem; /* Tamaño grande */
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+    text-shadow: 2px 2px 15px rgba(0,0,0,0.7); /* Sombra para resaltar */
+}
+
+/* Color dorado GymMax para resaltar palabras */
+.resaltado {
+    color: #FFD700;
+}
+
+/* Estilo del subtítulo */
+.banner-content p {
+    font-size: 1.2rem;
+    font-weight: 300;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 30px;
+}
+
+/* Botón minimalista */
+.btn-scroll {
+    display: inline-block;
+    padding: 12px 30px;
+    background-color: transparent;
+    border: 2px solid #FFD700;
+    color: #FFD700;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 30px;
+    transition: 0.3s ease;
+}
+
+.btn-scroll:hover {
+    background-color: #FFD700;
+    color: black;
+}
+
+
