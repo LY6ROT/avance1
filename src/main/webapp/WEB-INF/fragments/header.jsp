@@ -40,7 +40,7 @@
                 <% } else { %>
                     <li class="nav-item mt-3 mt-lg-0 d-flex align-items-center bg-dark px-3 py-2 rounded-pill border border-warning">
                         <span style="color: #FFD700; font-weight: bold; margin-right: 15px; font-size: 0.95rem;">
-                            <i class="fa-solid fa-user me-2"></i> Hola, <%= user.getNombre() %>
+                           <i class="fa-solid fa-user me-2"></i> Hola, <%= user.getNombres() %>
                         </span>
                         <a href="${pageContext.request.contextPath}/LogoutController" class="btn btn-sm btn-outline-danger fw-bold rounded-pill" style="border-width: 2px;">
                             Salir <i class="fa-solid fa-right-from-bracket ms-1"></i>

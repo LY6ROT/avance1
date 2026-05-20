@@ -4,90 +4,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GymMax | Únete a la Leyenda</title>
-
+    <title>GymMax | Registro de socio</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Poppins:wght@300;400;600;800&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
-    
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/inicio.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/login.css">
 </head>
 <body>
-
     <%@include file="/WEB-INF/fragments/header.jsp" %>
 
     <main class="login-pantalla d-flex align-items-center justify-content-center py-5">
-        <div class="banner-overlay"></div>
-        
-        <div class="login-caja position-relative z-3" style="max-width: 650px;">
+        <div class="login-caja position-relative z-3 mt-5" style="max-width: 450px; width: 100%;">
             
-            <div class="text-center mb-4">
-                <i class="fa-solid fa-id-card fa-3x text-warning mb-3"></i>
-                <h2 style="font-family: 'Anton', sans-serif; color: white; letter-spacing: 1px;">CREA TU CUENTA <span class="text-warning">GYMMAX</span></h2>
-                <p class="text-secondary small">Estás a un paso de empezar tu transformación</p>
+            <div class="mb-4 text-center position-relative">
+                <a href="Login.jsp" class="text-white position-absolute start-0 top-0 mt-1 fs-5 text-decoration-none">
+                    <i class="fa-solid fa-arrow-left"></i>
+                </a>
+                <h4 class="mb-3 text-white fw-bold">Registro de socio</h4>
+                
+                <div class="bg-warning rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 70px; height: 70px;">
+                    <i class="fa-solid fa-user-plus fa-2x text-dark"></i>
+                </div>
             </div>
 
-            <form action="RegistroController" method="POST" class="needs-validation" novalidate>
+            <form action="RegistroServlet" method="POST" class="needs-validation text-start" novalidate>
                 
-                <div class="row g-3">
-                    <div class="col-md-6">
-                        <label class="form-label text-secondary fw-bold small text-uppercase">Nombres</label>
-                        <input type="text" name="nombres" class="form-control form-control-dark" placeholder="Juan" required>
-                    </div>
-
-                    <div class="col-md-6">
-                        <label class="form-label text-secondary fw-bold small text-uppercase">Apellidos</label>
-                        <input type="text" name="apellidos" class="form-control form-control-dark" placeholder="Pérez" required>
-                    </div>
-
-                    <div class="col-md-6">
-                        <label class="form-label text-secondary fw-bold small text-uppercase">DNI / Documento</label>
-                        <input type="text" name="dni" class="form-control form-control-dark" placeholder="77777777" required pattern="[0-9]{8,12}">
-                    </div>
-
-                    <div class="col-md-6">
-                        <label class="form-label text-secondary fw-bold small text-uppercase">Teléfono</label>
-                        <input type="tel" name="telefono" class="form-control form-control-dark" placeholder="987654321">
-                    </div>
-
-                    <div class="col-12">
-                        <label class="form-label text-secondary fw-bold small text-uppercase">Correo Electrónico</label>
-                        <input type="email" name="correo" class="form-control form-control-dark" placeholder="ejemplo@correo.com" required>
-                    </div>
-
-                    <div class="col-md-6">
-                        <label class="form-label text-secondary fw-bold small text-uppercase">Contraseña</label>
-                        <input type="password" name="password" id="pass" class="form-control form-control-dark" placeholder="********" required>
-                    </div>
-
-                    <div class="col-md-6">
-                        <label class="form-label text-secondary fw-bold small text-uppercase">Confirmar Contraseña</label>
-                        <input type="password" name="confirm_password" id="confirm_pass" class="form-control form-control-dark" placeholder="********" required>
-                    </div>
+                <div class="mb-3">
+                    <label class="form-label text-secondary small mb-1">Nombres *</label>
+                    <input type="text" name="nombres" class="form-control form-control-dark custom-input" placeholder="Ej: Dennys Marlon" required>
+                    <div class="invalid-feedback">Ingrese sus nombres.</div>
                 </div>
 
-                <div class="form-check mt-4 mb-4">
-                    <input class="form-check-input" type="checkbox" id="terminos" required style="cursor: pointer; background-color: #000; border-color: #555;">
-                    <label class="form-check-label small text-secondary" for="terminos" style="cursor: pointer;">
-                        Acepto los <a href="#" class="text-warning text-decoration-none">términos de servicio</a> y la política de privacidad de GymMax.
+                <div class="mb-3">
+                    <label class="form-label text-secondary small mb-1">Apellidos *</label>
+                    <input type="text" name="apellidos" class="form-control form-control-dark custom-input" placeholder="Ej: Purizaca Ipanaque" required>
+                    <div class="invalid-feedback">Ingrese sus apellidos.</div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label text-secondary small mb-1">DNI *</label>
+                    <input type="text" name="dni" class="form-control form-control-dark custom-input" placeholder="12345678" required pattern="[0-9]{8}">
+                    <div class="invalid-feedback">El DNI debe tener 8 dígitos.</div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label text-secondary small mb-1">Correo *</label>
+                    <input type="email" name="correo" class="form-control form-control-dark custom-input" placeholder="correo@ejemplo.com" required>
+                    <div class="invalid-feedback">Ingrese un correo válido.</div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label text-secondary small mb-1">Celular</label>
+                    <input type="tel" name="telefono" class="form-control form-control-dark custom-input" placeholder="9XXXXXXXX">
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label text-secondary small mb-1">Contraseña *</label>
+                    <input type="password" name="password" class="form-control form-control-dark custom-input" placeholder="Mínimo 8 caracteres" required minlength="8">
+                    <div class="invalid-feedback">Debe tener al menos 8 caracteres.</div>
+                </div>
+
+                <div class="form-check mb-4">
+                    <input class="form-check-input bg-dark border-secondary" type="checkbox" id="terminos" required>
+                    <label class="form-check-label small text-secondary" for="terminos">
+                        Acepto los términos y condiciones
                     </label>
+                    <div class="invalid-feedback">Debe aceptar los términos.</div>
                 </div>
 
-                <button type="submit" class="btn btn-principal w-100 py-3 mb-3" style="border-radius: 8px;">
-                    REGISTRARME AHORA <i class="fa-solid fa-user-plus ms-2"></i>
+                <button type="submit" class="btn btn-warning w-100 py-2 fw-bold text-dark" style="border-radius: 8px;">
+                    <i class="fa-regular fa-circle-check me-2"></i> Crear cuenta
                 </button>
-
-                <div class="text-center mt-2">
-                    <p class="text-secondary small">¿Ya tienes una cuenta? <a href="Login.jsp" class="text-warning text-decoration-none fw-bold">Inicia sesión aquí</a></p>
-                </div>
             </form>
         </div>
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Script de validación de Bootstrap (Desactiva el envío si hay campos vacíos)
+        // Lógica de Bootstrap para validar campos vacíos antes de enviar
         (() => {
           'use strict'
           const forms = document.querySelectorAll('.needs-validation')
@@ -102,6 +97,5 @@
           })
         })()
     </script>
-
 </body>
 </html>

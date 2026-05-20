@@ -24,7 +24,7 @@
             </style>
             <div class="banner-overlay"></div>
             <div class="banner-content container text-center">
-                <h1 style="font-size: 3.5rem;">CONOCE EL <span class="resaltado">OLIMPO</span></h1>
+                <h1 style="font-size: 3.5rem;">CONOCE <span class="resaltado">GYMMAX</span></h1>
                 <p>Más que un gimnasio, somos una comunidad dedicada a forjar la mejor versión de ti.</p>
             </div>
         </section>
