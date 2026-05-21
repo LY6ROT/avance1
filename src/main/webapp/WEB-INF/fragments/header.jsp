@@ -1,14 +1,22 @@
+<%@page import="java.util.List"%>
 <%@page import="com.gymmax.model.Usuario"%>
+<%@page import="com.gymmax.model.ItemCarrito"%>
 <%
-    // Recuperamos al usuario de la sesión del servidor
-    Usuario user = (Usuario) session.getAttribute("usuarioSession");
+    // Usamos nombres únicos (terminados en Nav) para evitar el error "Duplicate local variable"
+    Usuario userNav = (Usuario) session.getAttribute("usuarioSession");
+    List<ItemCarrito> carritoNav = (List<ItemCarrito>) session.getAttribute("carrito");
+    int totalItemsNav = 0;
+    double totalPagarNav = 0.0;
+    if(carritoNav != null) {
+        totalItemsNav = carritoNav.size();
+        for(ItemCarrito item : carritoNav) { totalPagarNav += item.getSubtotal(); }
+    }
 %>
 
 <nav class="navbar navbar-expand-lg fixed-top" style="background-color: rgba(0, 0, 0, 0.95); border-bottom: 2px solid #FFD700; padding: 10px 0;">
     <div class="container">
-        
         <a class="navbar-brand d-flex align-items-center" href="${pageContext.request.contextPath}/index.jsp">
-            <img src="${pageContext.request.contextPath}/assets/img/logo.png" alt="GymMax Logo" style="height: 50px; transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+            <h2 style="font-family: 'Anton', sans-serif; color: white; margin: 0;">Gym<span class="text-warning">Max</span></h2>
         </a>
 
         <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#menuNavegacion" style="background-color: #FFD700;">
@@ -17,38 +25,74 @@
 
         <div class="collapse navbar-collapse justify-content-end" id="menuNavegacion">
             <ul class="navbar-nav align-items-center gap-2 gap-lg-4">
+                <li class="nav-item"><a class="nav-link text-white fw-bold text-uppercase" href="${pageContext.request.contextPath}/index.jsp">Inicio</a></li>
+                <li class="nav-item"><a class="nav-link text-white fw-bold text-uppercase" href="${pageContext.request.contextPath}/Gimnasios">Gimnasios</a></li>
+                <li class="nav-item"><a class="nav-link text-white fw-bold text-uppercase" href="${pageContext.request.contextPath}/Nosotros.jsp">Nosotros</a></li>
+                <li class="nav-item"><a class="nav-link text-white fw-bold text-uppercase" href="${pageContext.request.contextPath}/Contactenos.jsp">Contactenos</a></li>
                 
-                <li class="nav-item">
-                    <a class="nav-link text-white fw-bold text-uppercase" href="${pageContext.request.contextPath}/index.jsp">Inicio</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white fw-bold text-uppercase" href="${pageContext.request.contextPath}/gimnasios.jsp">Gimnasios</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white fw-bold text-uppercase" href="${pageContext.request.contextPath}/Nosotros.jsp">Nosotros</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white fw-bold text-uppercase" href="${pageContext.request.contextPath}/Contactenos.jsp">Contacto</a>
-                </li>
-
-                <% if(user == null) { %>
+                <% if(userNav == null) { %>
                     <li class="nav-item mt-3 mt-lg-0">
-                        <a href="${pageContext.request.contextPath}/Login.jsp" class="btn fw-bold px-4" style="background-color: #FFD700; color: #000; border-radius: 8px; box-shadow: 0 4px 10px rgba(255, 215, 0, 0.2);">
-                            LOGIN
-                        </a>
+                        <a href="${pageContext.request.contextPath}/Login.jsp" class="btn fw-bold px-4" style="background-color: #FFD700; color: #000; border-radius: 8px;">LOGIN</a>
                     </li>
                 <% } else { %>
-                    <li class="nav-item mt-3 mt-lg-0 d-flex align-items-center bg-dark px-3 py-2 rounded-pill border border-warning">
+                    <li class="nav-item mt-3 mt-lg-0 d-flex align-items-center">
                         <span style="color: #FFD700; font-weight: bold; margin-right: 15px; font-size: 0.95rem;">
-                           <i class="fa-solid fa-user me-2"></i> Hola, <%= user.getNombres() %>
+                            <i class="fa-solid fa-user me-2"></i> Hola, <%= userNav.getNombres() %>
                         </span>
-                        <a href="${pageContext.request.contextPath}/LogoutController" class="btn btn-sm btn-outline-danger fw-bold rounded-pill" style="border-width: 2px;">
-                            Salir <i class="fa-solid fa-right-from-bracket ms-1"></i>
-                        </a>
+                        
+                        <button class="btn btn-outline-warning me-3 position-relative" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCarrito">
+                            <i class="fa-solid fa-cart-shopping"></i>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"><%= totalItemsNav %></span>
+                        </button>
+
+                        <a href="${pageContext.request.contextPath}/LogoutController" class="btn btn-sm btn-outline-danger fw-bold rounded-pill border-2">Salir <i class="fa-solid fa-right-from-bracket ms-1"></i></a>
                     </li>
                 <% } %>
-                
             </ul>
         </div>
     </div>
-</nav> 
+</nav>
+
+<% if(userNav != null) { %>
+<div class="offcanvas offcanvas-end bg-dark text-white" tabindex="-1" id="offcanvasCarrito" style="border-left: 2px solid #FFD700;">
+    <div class="offcanvas-header border-bottom border-secondary">
+        <h5 class="offcanvas-title fw-bold" style="font-family: 'Anton', sans-serif;"><i class="fa-solid fa-cart-shopping text-warning me-2"></i> TU CARRITO</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+    </div>
+    <div class="offcanvas-body d-flex flex-column">
+        <% if(carritoNav == null || carritoNav.isEmpty()) { %>
+            <div class="text-center mt-5">
+                <i class="fa-solid fa-basket-shopping fa-3x text-secondary mb-3"></i>
+                <p class="text-secondary">Tu carrito está vacío.</p>
+            </div>
+        <% } else { %>
+            <div class="flex-grow-1 overflow-auto">
+                <% for(ItemCarrito item : carritoNav) { %>
+                    <div class="card bg-black border-secondary mb-3">
+                        <div class="card-body p-3">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <h6 class="fw-bold text-warning mb-1"><%= item.getPlan().getNombre() %></h6>
+                                    <small class="text-light">Duración: <%= item.getPlan().getDuracionDias() %> días</small>
+                                </div>
+                                <a href="${pageContext.request.contextPath}/Carrito?accion=eliminar&idPlan=<%= item.getPlan().getIdPlan() %>" class="text-danger"><i class="fa-solid fa-trash"></i></a>
+                            </div>
+                            <div class="mt-2 d-flex justify-content-between align-items-center">
+                                <span class="badge bg-secondary">Cant: <%= item.getCantidad() %></span>
+                                <span class="fw-bold text-white">S/ <%= String.format("%.2f", item.getSubtotal()) %></span>
+                            </div>
+                        </div>
+                    </div>
+                <% } %>
+            </div>
+            <div class="border-top border-secondary pt-3 mt-3">
+                <div class="d-flex justify-content-between fs-5 fw-bold mb-3">
+                    <span>Total a pagar:</span>
+                    <span class="text-warning">S/ <%= String.format("%.2f", totalPagarNav) %></span>
+                </div>
+                <a href="${pageContext.request.contextPath}/pago.jsp" class="btn btn-warning w-100 fw-bold text-dark py-2">FINALIZAR COMPRA <i class="fa-regular fa-credit-card ms-2"></i></a>
+            </div>
+        <% } %>
+    </div>
+</div>
+<% } %>

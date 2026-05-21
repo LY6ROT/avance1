@@ -21,9 +21,10 @@
             <li><a href="gestionSocios.jsp"><i class="fa-solid fa-users"></i> Socios</a></li>
             <li><a href="#"><i class="fa-solid fa-location-dot"></i> Sedes</a></li>
             <li><a href="#"><i class="fa-solid fa-award"></i> Membresías</a></li>
-            <li><a href="#"><i class="fa-regular fa-calendar-days"></i> Clases</a></li>
+            <li><a href="reservarClase.jsp"><i class="fa-regular fa-calendar-days"></i> Clases</a></li>
             <li><a href="#"><i class="fa-solid fa-money-bill-wave"></i> Pagos</a></li>
             <li><a href="reportes.jsp"><i class="fa-solid fa-chart-line"></i> Reportes</a></li>
+            
         </ul>
 
         <div class="admin-logout">

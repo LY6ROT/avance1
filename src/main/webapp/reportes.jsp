@@ -24,6 +24,7 @@
             <li><a href="#"><i class="fa-regular fa-calendar-days"></i> Clases</a></li>
             <li><a href="#"><i class="fa-solid fa-money-bill-wave"></i> Pagos</a></li>
             <li><a href="reportes.jsp" class="active"><i class="fa-solid fa-chart-line"></i> Reportes</a></li>
+        
         </ul>
 
         <div class="admin-logout">

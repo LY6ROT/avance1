@@ -16,7 +16,7 @@ public class RegistroServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        // 1. Recibir los datos tipeados por el usuario en registro.jsp
+        // 1. Recibir los datos del formulario
         String nombres = request.getParameter("nombres");
         String apellidos = request.getParameter("apellidos");
         String dni = request.getParameter("dni");
@@ -24,23 +24,23 @@ public class RegistroServlet extends HttpServlet {
         String telefono = request.getParameter("telefono");
         String password = request.getParameter("password");
         
-        // 2. Encapsulamos la información en nuestro Objeto Modelo
+        // 2. Guardar en el objeto Usuario
         Usuario nuevoUsuario = new Usuario();
         nuevoUsuario.setNombres(nombres);
         nuevoUsuario.setApellidos(apellidos);
         nuevoUsuario.setCorreo(correo);
         nuevoUsuario.setPassword(password);
         
-        // 3. Enviamos el modelo y los datos extra al DAO
+        // 3. Enviar a Base de Datos
         UsuarioDAO dao = new UsuarioDAO();
         boolean fueRegistrado = dao.registrarSocio(nuevoUsuario, dni, telefono);
         
-        // 4. Verificamos y redireccionamos
+        // 4. Redireccionar según el resultado
         if (fueRegistrado) {
-            // Redirige al login para que inicie sesión con su nueva cuenta
-            response.sendRedirect("Login.jsp");
+            // Si tiene éxito, lo manda al login con un mensaje de confirmación
+            response.sendRedirect("Login.jsp?registro=exito");
         } else {
-            // Si el correo o el DNI ya existen en BD, o hay otro error
+            // Si falla (ej. el correo o DNI ya existen)
             response.sendRedirect("registro.jsp?error=1");
         }
     }

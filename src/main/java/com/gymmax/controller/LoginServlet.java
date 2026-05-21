@@ -16,7 +16,7 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         // 1. Recibir parámetros del formulario
         String correo = request.getParameter("correo");
         String pass = request.getParameter("password");
@@ -28,8 +28,9 @@ public class LoginServlet extends HttpServlet {
         // 3. Evaluar respuesta e iniciar sesión
         if (usuario != null) {
             HttpSession session = request.getSession();
-            session.setAttribute("usuarioLogueado", usuario);
-            
+            // Cambia "usuarioLogueado" por "usuarioSession" si es necesario
+            session.setAttribute("usuarioSession", usuario);
+
             // Redirección por Rol
             if ("ADMIN".equals(usuario.getRol())) {
                 response.sendRedirect("adminDashboard.jsp");

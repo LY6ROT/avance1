@@ -16,6 +16,26 @@
         <servlet-name>RegistroServlet</servlet-name>
         <servlet-class>com.gymmax.controller.RegistroServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CarritoServlet</servlet-name>
+        <servlet-class>com.gymmax.controller.CarritoServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PagoServlet</servlet-name>
+        <servlet-class>com.gymmax.controller.PagoServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ReservaServlet</servlet-name>
+        <servlet-class>com.gymmax.controller.ReservaServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AdminSociosServlet</servlet-name>
+        <servlet-class>com.gymmax.controller.AdminSociosServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AdminClasesServlet</servlet-name>
+        <servlet-class>com.gymmax.controller.AdminClasesServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/LoginServlet</url-pattern>
@@ -31,6 +51,26 @@
     <servlet-mapping>
         <servlet-name>RegistroServlet</servlet-name>
         <url-pattern>/RegistroServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CarritoServlet</servlet-name>
+        <url-pattern>/CarritoServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PagoServlet</servlet-name>
+        <url-pattern>/PagoServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ReservaServlet</servlet-name>
+        <url-pattern>/ReservaServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminSociosServlet</servlet-name>
+        <url-pattern>/AdminSociosServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminClasesServlet</servlet-name>
+        <url-pattern>/AdminClasesServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
