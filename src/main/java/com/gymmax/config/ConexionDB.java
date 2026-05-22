@@ -10,7 +10,7 @@ public class ConexionDB {
     private static final String DATABASE = "gymmax_db";
     private static final String URL = "jdbc:mysql://localhost:3306/" + DATABASE + "?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true";
     private static final String USER = "root";
-    private static final String PASS = "Olivertorre1"; // <-- Reemplaza con tu clave de MySQL Workbench
+    private static final String PASS = "1673495"; // <-- Reemplaza con tu clave de MySQL Workbench
 
     public static Connection getConexion() {
         Connection con = null;
