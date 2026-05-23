@@ -15,14 +15,13 @@
         <%@include file="/WEB-INF/fragments/header.jsp" %>
 
         <main class="login-pantalla d-flex align-items-center justify-content-center py-5">
-            <div class="login-caja position-relative z-3 mt-5" style="max-width: 450px; width: 100%;">
+            <div class="login-caja position-relative z-3 mt-5" style="max-width: 500px; width: 100%;">
 
                 <div class="mb-4 text-center position-relative">
                     <a href="Login.jsp" class="text-white position-absolute start-0 top-0 mt-1 fs-5 text-decoration-none">
                         <i class="fa-solid fa-arrow-left"></i>
                     </a>
                     <h4 class="mb-3 text-white fw-bold">Registro de socio</h4>
-
                     <div class="bg-warning rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 70px; height: 70px;">
                         <i class="fa-solid fa-user-plus fa-2x text-dark"></i>
                     </div>
@@ -33,35 +32,63 @@
                     <i class="fa-solid fa-circle-exclamation me-2"></i> El correo o DNI ya están registrados.
                 </div>
                 <% }%>
+         
                 <form action="${pageContext.request.contextPath}/RegistroServlet" method="POST" class="needs-validation text-start" novalidate>
 
-                    <div class="mb-3">
-                        <label class="form-label text-secondary small mb-1">Nombres *</label>
-                        <input type="text" name="nombres" class="form-control form-control-dark custom-input" placeholder="Ej: Dennys Marlon" required>
-                        <div class="invalid-feedback">Ingrese sus nombres.</div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label text-secondary small mb-1">Nombres *</label>
+                            <input type="text" name="nombres" class="form-control form-control-dark custom-input" placeholder="Ej: Dennys Marlon" required>
+                            <div class="invalid-feedback">Ingrese sus nombres.</div>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label text-secondary small mb-1">Apellidos *</label>
+                            <input type="text" name="apellidos" class="form-control form-control-dark custom-input" placeholder="Ej: Purizaca Ipanaque" required>
+                            <div class="invalid-feedback">Ingrese sus apellidos.</div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label text-secondary small mb-1">DNI *</label>
+                            <input type="text" name="dni" class="form-control form-control-dark custom-input" placeholder="12345678" required pattern="[0-9]{8}">
+                            <div class="invalid-feedback">El DNI debe tener 8 dígitos.</div>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label text-secondary small mb-1">Celular</label>
+                            <input type="tel" name="telefono" class="form-control form-control-dark custom-input" placeholder="9XXXXXXXX">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label text-secondary small mb-1">Fecha de Nacimiento *</label>
+                            <input type="date" name="fecha_nac" class="form-control form-control-dark custom-input" required>
+                            <div class="invalid-feedback">Seleccione su fecha.</div>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label text-secondary small mb-1">Género *</label>
+                            <select name="genero" class="form-select form-control-dark custom-input" required>
+                                <option value="" disabled selected>Seleccione...</option>
+                                <option value="M">Masculino</option>
+                                <option value="F">Femenino</option>
+                            </select>
+                            <div class="invalid-feedback">Seleccione un género.</div>
+                        </div>
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label text-secondary small mb-1">Apellidos *</label>
-                        <input type="text" name="apellidos" class="form-control form-control-dark custom-input" placeholder="Ej: Purizaca Ipanaque" required>
-                        <div class="invalid-feedback">Ingrese sus apellidos.</div>
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label text-secondary small mb-1">DNI *</label>
-                        <input type="text" name="dni" class="form-control form-control-dark custom-input" placeholder="12345678" required pattern="[0-9]{8}">
-                        <div class="invalid-feedback">El DNI debe tener 8 dígitos.</div>
+                        <label class="form-label text-secondary small mb-1">Dirección</label>
+                        <input type="text" name="direccion" class="form-control form-control-dark custom-input" placeholder="Ej: Av. Las Palmeras 1020">
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label text-secondary small mb-1">Correo *</label>
                         <input type="email" name="correo" class="form-control form-control-dark custom-input" placeholder="correo@ejemplo.com" required>
                         <div class="invalid-feedback">Ingrese un correo válido.</div>
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label text-secondary small mb-1">Celular</label>
-                        <input type="tel" name="telefono" class="form-control form-control-dark custom-input" placeholder="9XXXXXXXX">
                     </div>
 
                     <div class="mb-4">
@@ -87,7 +114,6 @@
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
         <script>
-            // Lógica de Bootstrap para validar campos vacíos antes de enviar
             (() => {
                 'use strict'
                 const forms = document.querySelectorAll('.needs-validation')

@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Date; // Necesario para la fecha de nacimiento
 
 public class UsuarioDAO {
     
@@ -42,10 +43,12 @@ public class UsuarioDAO {
     // ==========================================
     // REGISTRAR SOCIO (En tablas USUARIO y SOCIO)
     // ==========================================
-    public boolean registrarSocio(Usuario usuario, String dni, String celular) {
+    // Modificamos los parámetros para recibir fechaNac, genero y direccion
+    public boolean registrarSocio(Usuario usuario, String dni, String celular, String fechaNac, String genero, String direccion) {
         boolean exito = false;
         String sqlUsuario = "INSERT INTO USUARIO (correo, password, nombres, apellidos, rol) VALUES (?, ?, ?, ?, 'SOCIO')";
-        String sqlSocio = "INSERT INTO SOCIO (id_usuario, dni, celular, fecha_reg) VALUES (?, ?, ?, CURDATE())";
+        // Actualizamos el SQL para insertar los campos faltantes
+        String sqlSocio = "INSERT INTO SOCIO (id_usuario, dni, celular, fecha_nac, genero, direccion, fecha_reg) VALUES (?, ?, ?, ?, ?, ?, CURDATE())";
         
         Connection con = null;
         PreparedStatement psUsuario = null;
@@ -54,10 +57,8 @@ public class UsuarioDAO {
         
         try {
             con = ConexionDB.getConexion();
-            // Desactivamos el autocommit para manejar la transacción manualmente
             con.setAutoCommit(false); 
             
-            // 1. Insertamos en USUARIO y pedimos que nos devuelva el ID generado
             psUsuario = con.prepareStatement(sqlUsuario, PreparedStatement.RETURN_GENERATED_KEYS);
             psUsuario.setString(1, usuario.getCorreo());
             psUsuario.setString(2, usuario.getPassword()); 
@@ -69,17 +70,26 @@ public class UsuarioDAO {
                 if (rs.next()) {
                     int idUsuarioGenerado = rs.getInt(1);
                     
-                    // 2. Insertamos en SOCIO usando el ID que acabamos de crear
                     psSocio = con.prepareStatement(sqlSocio);
                     psSocio.setInt(1, idUsuarioGenerado);
                     psSocio.setString(2, dni);
                     psSocio.setString(3, celular);
                     
+                    // Convertimos el String del JSP (YYYY-MM-DD) a un java.sql.Date
+                    if (fechaNac != null && !fechaNac.isEmpty()) {
+                        psSocio.setDate(4, Date.valueOf(fechaNac));
+                    } else {
+                        psSocio.setNull(4, java.sql.Types.DATE);
+                    }
+                    
+                    psSocio.setString(5, genero);
+                    psSocio.setString(6, direccion);
+                    
                     if (psSocio.executeUpdate() > 0) {
-                        con.commit(); // Todo salió bien, guardamos definitivamente
+                        con.commit(); 
                         exito = true;
                     } else {
-                        con.rollback(); // Falló el socio, deshacemos todo
+                        con.rollback(); 
                     }
                 }
             }
@@ -104,5 +114,33 @@ public class UsuarioDAO {
             }
         }
         return exito;
+    }
+    
+    // ==========================================
+    // LISTAR SOCIOS PARA EL PANEL ADMINISTRATIVO
+    // ==========================================
+    public java.util.List<com.gymmax.model.SocioDTO> listarSocios() {
+        java.util.List<com.gymmax.model.SocioDTO> lista = new java.util.ArrayList<>();
+        String sql = "SELECT s.id_socio, CONCAT(u.nombres, ' ', u.apellidos) AS nombre_completo, s.dni, u.correo, s.fecha_reg " +
+                     "FROM SOCIO s " +
+                     "INNER JOIN USUARIO u ON s.id_usuario = u.id_usuario WHERE u.rol = 'SOCIO'";
+
+        try (Connection con = ConexionDB.getConexion();
+             PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                com.gymmax.model.SocioDTO socio = new com.gymmax.model.SocioDTO();
+                socio.setIdSocio(rs.getInt("id_socio"));
+                socio.setNombreCompleto(rs.getString("nombre_completo"));
+                socio.setDni(rs.getString("dni"));
+                socio.setCorreo(rs.getString("correo"));
+                socio.setFechaRegistro(rs.getString("fecha_reg"));
+                lista.add(socio);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error en listarSocios: " + e.getMessage());
+        }
+        return lista;
     }
 }

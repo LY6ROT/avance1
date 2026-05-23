@@ -82,14 +82,18 @@ body {
 }
 
 .banner-content h1 {
-    font-family: 'Anton', sans-serif;
-    font-size: 5rem;
+    font-family: 'Poppins', sans-serif; /* Unificado para evitar disparidad de tamaño */
+    font-weight: 800;
+    font-size: 4.5rem;
     text-transform: uppercase;
     text-shadow: 2px 2px 15px rgba(0,0,0,0.8);
 }
 
 .resaltado {
     color: var(--dorado);
+    font-size: inherit; /* Fuerza a heredar el tamaño exacto de la letra blanca */
+    font-family: inherit; /* Asegura que mantenga la fuente Anton */
+    display: inline-block;
 }
 
 /* Botones Hero */
@@ -136,7 +140,8 @@ body {
 
 .titulo-seccion {
     display: inline-block;
-    font-family: 'Anton', sans-serif;
+    font-family: 'Poppins', sans-serif; /* Unificado */
+    font-weight: 700;
     font-size: 2.8rem;
     color: var(--dorado);
     border-bottom: 4px solid var(--dorado);
@@ -164,7 +169,8 @@ body {
 }
 
 .pf_titulo {
-    font-family: 'Anton', sans-serif;
+    font-family: 'Poppins', sans-serif; /* Unificado */
+    font-weight: 600;
     font-size: 1.4rem;
     color: white;
     margin-bottom: 15px;
@@ -295,14 +301,12 @@ body {
     to { transform: scale(1); opacity: 1; }
 }
 
-
-
 /* --- BUSCADOR PROFESIONAL --- */
 .contenedor-buscador {
     margin-bottom: 60px;
     display: flex;
     justify-content: center;
-    margin-top: -30px; /* Sube un poco sobre el banner */
+    margin-top: -30px; 
     position: relative;
     z-index: 10;
 }
@@ -341,7 +345,7 @@ body {
     background-color: #000;
 }
 
-/* --- TARJETAS DE GIMNASIOS (GIMNASIOS.JSP) --- */
+/* --- TARJETAS DE GIMNASIOS --- */
 .card-gimnasio {
     background-color: var(--oscuro-tarjetas);
     border-radius: 20px;
@@ -368,7 +372,6 @@ body {
     background: linear-gradient(to top, var(--oscuro-tarjetas), transparent);
 }
 
-/* Tags de ubicación */
 .lista-tags li {
     background-color: rgba(255, 215, 0, 0.1);
     color: var(--dorado);
@@ -382,8 +385,6 @@ body {
     color: black;
 }
 
-
-/* Ajuste para que el formulario de registro no se pegue al borde en móviles */
 @media (max-width: 768px) {
     .login-caja {
         margin: 20px;

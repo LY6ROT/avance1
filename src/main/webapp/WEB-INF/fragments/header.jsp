@@ -2,7 +2,6 @@
 <%@page import="com.gymmax.model.Usuario"%>
 <%@page import="com.gymmax.model.ItemCarrito"%>
 <%
-    // Usamos nombres únicos (terminados en Nav) para evitar el error "Duplicate local variable"
     Usuario userNav = (Usuario) session.getAttribute("usuarioSession");
     List<ItemCarrito> carritoNav = (List<ItemCarrito>) session.getAttribute("carrito");
     int totalItemsNav = 0;
@@ -28,32 +27,35 @@
                 <li class="nav-item"><a class="nav-link text-white fw-bold text-uppercase" href="${pageContext.request.contextPath}/index.jsp">Inicio</a></li>
                 <li class="nav-item"><a class="nav-link text-white fw-bold text-uppercase" href="${pageContext.request.contextPath}/Gimnasios">Gimnasios</a></li>
                 <li class="nav-item"><a class="nav-link text-white fw-bold text-uppercase" href="${pageContext.request.contextPath}/Nosotros.jsp">Nosotros</a></li>
-                <li class="nav-item"><a class="nav-link text-white fw-bold text-uppercase" href="${pageContext.request.contextPath}/Contactenos.jsp">Contactenos</a></li>
+                <li class="nav-item"><a class="nav-link text-white fw-bold text-uppercase" href="${pageContext.request.contextPath}/Contactenos.jsp">Contáctenos</a></li>
                 
-                <% if(userNav == null) { %>
-                    <li class="nav-item mt-3 mt-lg-0">
-                        <a href="${pageContext.request.contextPath}/Login.jsp" class="btn fw-bold px-4" style="background-color: #FFD700; color: #000; border-radius: 8px;">LOGIN</a>
-                    </li>
-                <% } else { %>
-                    <li class="nav-item mt-3 mt-lg-0 d-flex align-items-center">
-                        <span style="color: #FFD700; font-weight: bold; margin-right: 15px; font-size: 0.95rem;">
-                            <i class="fa-solid fa-user me-2"></i> Hola, <%= userNav.getNombres() %>
+                <li class="nav-item d-flex align-items-center gap-2">
+                    <button class="btn btn-sm btn-outline-warning position-relative me-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCarrito">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.65rem;"><%= totalItemsNav %></span>
+                    </button>
+
+                    <% if(userNav == null) { %>
+                        <a href="${pageContext.request.contextPath}/Login.jsp" class="btn fw-bold px-4 btn-sm" style="background-color: #FFD700; color: #000; border-radius: 8px;">LOGIN</a>
+                    <% } else { %>
+                        <span style="color: #FFD700; font-weight: bold; margin-right: 10px; font-size: 0.95rem;">
+                            <i class="fa-solid fa-user me-1"></i> <%= userNav.getNombres() %>
                         </span>
                         
-                        <button class="btn btn-outline-warning me-3 position-relative" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCarrito">
-                            <i class="fa-solid fa-cart-shopping"></i>
-                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"><%= totalItemsNav %></span>
-                        </button>
-
-                        <a href="${pageContext.request.contextPath}/LogoutController" class="btn btn-sm btn-outline-danger fw-bold rounded-pill border-2">Salir <i class="fa-solid fa-right-from-bracket ms-1"></i></a>
-                    </li>
-                <% } %>
+                        <% if ("ADMIN".equals(userNav.getRol())) { %>
+                            <a href="${pageContext.request.contextPath}/adminDashboard.jsp" class="btn btn-sm btn-outline-light fw-bold">Panel Admin</a>
+                        <% } else { %>
+                            <a href="${pageContext.request.contextPath}/dashboardSocio.jsp" class="btn btn-sm btn-outline-light fw-bold">Mi Dashboard</a>
+                        <% } %>
+                        
+                        <a href="${pageContext.request.contextPath}/LogoutController" class="btn btn-sm btn-outline-danger fw-bold rounded-pill border-2 ms-2">Salir</a>
+                    <% } %>
+                </li>
             </ul>
         </div>
     </div>
 </nav>
 
-<% if(userNav != null) { %>
 <div class="offcanvas offcanvas-end bg-dark text-white" tabindex="-1" id="offcanvasCarrito" style="border-left: 2px solid #FFD700;">
     <div class="offcanvas-header border-bottom border-secondary">
         <h5 class="offcanvas-title fw-bold" style="font-family: 'Anton', sans-serif;"><i class="fa-solid fa-cart-shopping text-warning me-2"></i> TU CARRITO</h5>
@@ -90,9 +92,13 @@
                     <span>Total a pagar:</span>
                     <span class="text-warning">S/ <%= String.format("%.2f", totalPagarNav) %></span>
                 </div>
-                <a href="${pageContext.request.contextPath}/pago.jsp" class="btn btn-warning w-100 fw-bold text-dark py-2">FINALIZAR COMPRA <i class="fa-regular fa-credit-card ms-2"></i></a>
+                
+                <% if(userNav != null) { %>
+                    <a href="${pageContext.request.contextPath}/pago.jsp" class="btn btn-warning w-100 fw-bold text-dark py-2">FINALIZAR COMPRA <i class="fa-regular fa-credit-card ms-2"></i></a>
+                <% } else { %>
+                    <a href="${pageContext.request.contextPath}/Login.jsp" class="btn btn-outline-warning w-100 fw-bold py-2">INICIA SESIÓN PARA COMPRAR <i class="fa-solid fa-right-to-bracket ms-2"></i></a>
+                <% } %>
             </div>
         <% } %>
     </div>
 </div>
-<% } %>

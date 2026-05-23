@@ -66,7 +66,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AdminSociosServlet</servlet-name>
-        <url-pattern>/AdminSociosServlet</url-pattern>
+        <url-pattern>/AdminSocios</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AdminClasesServlet</servlet-name>

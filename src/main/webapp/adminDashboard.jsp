@@ -18,7 +18,7 @@
         
         <ul class="admin-nav">
             <li><a href="adminDashboard.jsp" class="active"><i class="fa-solid fa-gauge-high"></i> Dashboard</a></li>
-            <li><a href="gestionSocios.jsp"><i class="fa-solid fa-users"></i> Socios</a></li>
+            <li><a href="${pageContext.request.contextPath}/AdminSocios"><i class="fa-solid fa-users"></i> Socios</a></li>
             <li><a href="#"><i class="fa-solid fa-location-dot"></i> Sedes</a></li>
             <li><a href="#"><i class="fa-solid fa-award"></i> Membresías</a></li>
             <li><a href="reservarClase.jsp"><i class="fa-regular fa-calendar-days"></i> Clases</a></li>
@@ -27,9 +27,10 @@
             
         </ul>
 
-        <div class="admin-logout">
+       <div class="admin-logout mt-auto">
             <ul class="admin-nav">
-                <li><a href="Login.jsp"><i class="fa-solid fa-arrow-right-from-bracket"></i> Salir</a></li>
+                <li><a href="${pageContext.request.contextPath}/index.jsp" class="text-white"><i class="fa-solid fa-house"></i> Volver al Menú</a></li>
+                <li><a href="${pageContext.request.contextPath}/LogoutController" class="text-danger"><i class="fa-solid fa-arrow-right-from-bracket"></i> Cerrar Sesión</a></li>
             </ul>
         </div>
     </aside>

@@ -64,18 +64,12 @@
                                     <% if (p.getTipo().equals("PREM") || p.getTipo().equals("ANUAL")) { %>
                                 <li class="mb-2"><i class="fa-solid fa-check text-success me-2"></i> Acceso a todas las sedes</li>
                                 <li class="mb-2"><i class="fa-solid fa-check text-success me-2"></i> Clases grupales incluidas</li>
-                                    <% } %>
+                                    <% }%>
                             </ul>
 
-                            <% if (session.getAttribute("usuarioSession") != null) {%>
                             <a href="${pageContext.request.contextPath}/Carrito?accion=agregar&idPlan=<%= p.getIdPlan()%>" class="btn btn-outline-warning fw-bold w-100 py-2" style="border-radius: 8px;">
                                 Añadir al Carrito <i class="fa-solid fa-cart-plus ms-2"></i>
                             </a>
-                            <% } else { %>
-                            <a href="${pageContext.request.contextPath}/Login.jsp" class="btn btn-secondary fw-bold w-100 py-2" style="border-radius: 8px;">
-                                Inicia sesión para comprar
-                            </a>
-                            <% } %>
                         </div>
                     </div>
                 </div>

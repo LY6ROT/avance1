@@ -24,6 +24,11 @@ public class RegistroServlet extends HttpServlet {
         String telefono = request.getParameter("telefono");
         String password = request.getParameter("password");
         
+        // Nuevos campos
+        String fechaNac = request.getParameter("fecha_nac");
+        String genero = request.getParameter("genero");
+        String direccion = request.getParameter("direccion");
+        
         // 2. Guardar en el objeto Usuario
         Usuario nuevoUsuario = new Usuario();
         nuevoUsuario.setNombres(nombres);
@@ -33,14 +38,13 @@ public class RegistroServlet extends HttpServlet {
         
         // 3. Enviar a Base de Datos
         UsuarioDAO dao = new UsuarioDAO();
-        boolean fueRegistrado = dao.registrarSocio(nuevoUsuario, dni, telefono);
+        // Actualizamos la llamada al método para incluir los nuevos campos
+        boolean fueRegistrado = dao.registrarSocio(nuevoUsuario, dni, telefono, fechaNac, genero, direccion);
         
         // 4. Redireccionar según el resultado
         if (fueRegistrado) {
-            // Si tiene éxito, lo manda al login con un mensaje de confirmación
             response.sendRedirect("Login.jsp?registro=exito");
         } else {
-            // Si falla (ej. el correo o DNI ya existen)
             response.sendRedirect("registro.jsp?error=1");
         }
     }
