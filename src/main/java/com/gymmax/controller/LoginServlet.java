@@ -42,7 +42,7 @@ public class LoginServlet extends HttpServlet {
                 if (carrito != null && !carrito.isEmpty()) {
                     response.sendRedirect("pago.jsp"); // Redirige a pagar de inmediato si ya tiene productos
                 } else {
-                    response.sendRedirect("dashboardSocio.jsp");
+                    response.sendRedirect("DashboardSocio");
                 }
             }
         } else {

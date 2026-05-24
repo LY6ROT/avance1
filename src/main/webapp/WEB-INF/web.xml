@@ -36,6 +36,14 @@
         <servlet-name>AdminClasesServlet</servlet-name>
         <servlet-class>com.gymmax.controller.AdminClasesServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DashboardSocioServlet</servlet-name>
+        <servlet-class>com.gymmax.controller.DashboardSocioServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>MisReservasServlet</servlet-name>
+        <servlet-class>com.gymmax.controller.MisReservasServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/LoginServlet</url-pattern>
@@ -52,17 +60,17 @@
         <servlet-name>RegistroServlet</servlet-name>
         <url-pattern>/RegistroServlet</url-pattern>
     </servlet-mapping>
-    <servlet-mapping>
+   <servlet-mapping>
         <servlet-name>CarritoServlet</servlet-name>
-        <url-pattern>/CarritoServlet</url-pattern>
+        <url-pattern>/Carrito</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>PagoServlet</servlet-name>
-        <url-pattern>/PagoServlet</url-pattern>
+        <url-pattern>/ProcesarPago</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ReservaServlet</servlet-name>
-        <url-pattern>/ReservaServlet</url-pattern>
+        <url-pattern>/Reserva</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AdminSociosServlet</servlet-name>
@@ -71,6 +79,18 @@
     <servlet-mapping>
         <servlet-name>AdminClasesServlet</servlet-name>
         <url-pattern>/AdminClasesServlet</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>DashboardSocioServlet</servlet-name>
+        <servlet-class>com.gymmax.controller.DashboardSocioServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DashboardSocioServlet</servlet-name>
+        <url-pattern>/DashboardSocio</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MisReservasServlet</servlet-name>
+        <url-pattern>/MisReservas</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

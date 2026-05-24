@@ -1,8 +1,6 @@
 package com.gymmax.controller;
 
-import com.gymmax.dao.ClaseDAO;
 import com.gymmax.dao.ReservaDAO;
-import com.gymmax.dao.SedeDAO;
 import com.gymmax.model.Usuario;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -11,66 +9,77 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
-@WebServlet(name = "ReservaServlet", urlPatterns = {"/ReservarClase"})
+@WebServlet(name = "ReservaServlet", urlPatterns = {"/Reserva"})
 public class ReservaServlet extends HttpServlet {
 
-    // 1. CARGA LA PANTALLA DE RESERVAS CON DATOS DINÁMICOS
+    // El método GET sirve para Cargar la página con los datos de las clases y los comodines usados
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
         HttpSession session = request.getSession();
-        Usuario user = (Usuario) session.getAttribute("usuarioSession");
-        if (user == null) {
+        Usuario usuario = (Usuario) session.getAttribute("usuarioSession");
+        
+        if (usuario == null) {
             response.sendRedirect("Login.jsp");
             return;
         }
 
-        SedeDAO sedeDao = new SedeDAO();
-        ClaseDAO claseDao = new ClaseDAO();
         ReservaDAO reservaDao = new ReservaDAO();
+        com.gymmax.dao.UsuarioDAO usuarioDao = new com.gymmax.dao.UsuarioDAO(); // NUEVO
 
-        request.setAttribute("sedes", sedeDao.listarSedes());
-        request.setAttribute("clases", claseDao.listarClases());
-        request.setAttribute("cambiosUsados", reservaDao.contarCambiosSede(user.getIdUsuario()));
+        // NUEVO: Extraemos la fecha de inicio y fin de la membresía activa
+        java.util.Map<String, String> membresia = usuarioDao.obtenerMembresiaActiva(usuario.getIdUsuario());
+        if(membresia != null) {
+            request.setAttribute("minFecha", membresia.get("inicio"));
+            request.setAttribute("maxFecha", membresia.get("fin"));
+        }
 
-        request.getRequestDispatcher("/reservarClase.jsp").forward(request, response);
+        int visitasOtraSede = reservaDao.contarVisitasOtraSede(usuario.getIdUsuario());
+        request.setAttribute("visitasOtraSede", visitasOtraSede);
+        
+        List<Map<String, String>> listaClases = reservaDao.listarClasesDisponibles();
+        request.setAttribute("listaClases", listaClases);
+        
+        request.getRequestDispatcher("reservarClase.jsp").forward(request, response);
     }
 
-    // 2. PROCESA EL BOTÓN DE "RESERVAR"
+    // El método POST sirve para Procesar el formulario cuando el socio le da a "Reservar"
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
         HttpSession session = request.getSession();
-        Usuario user = (Usuario) session.getAttribute("usuarioSession");
+        Usuario usuario = (Usuario) session.getAttribute("usuarioSession");
         
-        if (user == null) {
+        if (usuario == null) {
             response.sendRedirect("Login.jsp");
             return;
         }
 
+        // Recibimos los datos del formulario de reserva
         int idClase = Integer.parseInt(request.getParameter("idClase"));
-        int idSedeClase = Integer.parseInt(request.getParameter("idSedeClase"));
         String fecha = request.getParameter("fecha");
-        String hora = request.getParameter("hora");
-        
+        String hora = request.getParameter("hora"); 
+
         ReservaDAO reservaDao = new ReservaDAO();
         
-        if (idSedeClase != 1) { // Sede 1 es la principal
-            if (!reservaDao.puedeReservarEnOtraSede(user.getIdUsuario())) {
-                response.sendRedirect("ReservarClase?error=limite_sedes");
-                return;
-            }
-        }
-        
-        boolean exito = reservaDao.registrarReserva(user.getIdUsuario(), idClase, fecha, hora);
-        
-        if (exito) {
-            response.sendRedirect("misReservas.jsp?reserva=exito");
+        // Ejecutamos la regla de negocio que creamos en el DAO
+        String resultado = reservaDao.registrarReservaSegura(usuario.getIdUsuario(), idClase, fecha, hora);
+
+        // Evaluamos la respuesta para mostrar alertas exactas
+        if ("SEDE_PREDETERMINADA".equals(resultado)) {
+            response.sendRedirect("Reserva?error=sedepredeterminada");
+        } else if ("LIMITE_EXCEDIDO".equals(resultado)) {
+            response.sendRedirect("Reserva?error=limite");
+        } else if ("EXITO_FORANEA".equals(resultado)) {
+            // CORRECCIÓN: Apuntamos al Servlet Controlador, no al archivo físico .jsp
+            response.sendRedirect("MisReservas?reserva=exito_foranea");
         } else {
-            response.sendRedirect("ReservarClase?error=bd");
+            response.sendRedirect("Reserva?error=db");
         }
     }
 }

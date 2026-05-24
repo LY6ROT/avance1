@@ -143,4 +143,36 @@ public class UsuarioDAO {
         }
         return lista;
     }
+    // ==========================================
+    // OBTENER DETALLES DE LA MEMBRESÍA ACTIVA
+    // ==========================================
+    public java.util.Map<String, String> obtenerMembresiaActiva(int idUsuario) {
+        java.util.Map<String, String> datos = null;
+        String sql = "SELECT p.nombre AS plan_nombre, m.fecha_inicio, m.fecha_fin, m.estado, se.nombre AS sede_nombre " +
+                     "FROM MEMBRESIA m " +
+                     "INNER JOIN PLAN p ON m.id_plan = p.id_plan " +
+                     "INNER JOIN SOCIO s ON m.id_socio = s.id_socio " +
+                     "LEFT JOIN SEDE se ON s.id_sede_principal = se.id_sede " +
+                     "WHERE s.id_usuario = ? AND m.estado = 'ACT' " +
+                     "ORDER BY m.id_membresia DESC LIMIT 1";
+
+        try (Connection con = ConexionDB.getConexion();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            
+            ps.setInt(1, idUsuario);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    datos = new java.util.HashMap<>();
+                    datos.put("plan", rs.getString("plan_nombre"));
+                    datos.put("inicio", rs.getString("fecha_inicio"));
+                    datos.put("fin", rs.getString("fecha_fin"));
+                    datos.put("estado", rs.getString("estado"));
+                    datos.put("sede", rs.getString("sede_nombre") != null ? rs.getString("sede_nombre") : "Ninguna seleccionada");
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Error en obtenerMembresiaActiva: " + e.getMessage());
+        }
+        return datos;
+    }
 }

@@ -45,7 +45,7 @@ public class PagoServlet extends HttpServlet {
             if (exitoGlobal) {
                 // Si todo salió bien, vaciamos el carrito y mandamos al dashboard
                 session.removeAttribute("carrito");
-                response.sendRedirect("dashboardSocio.jsp?pago=exito");
+                response.sendRedirect("DashboardSocio?pago=exito");
             } else {
                 response.sendRedirect("pago.jsp?error=1");
             }
