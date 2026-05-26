@@ -35,7 +35,7 @@ public class LoginServlet extends HttpServlet {
 
             // Redirección por Rol
             if ("ADMIN".equals(usuario.getRol())) {
-                response.sendRedirect("adminDashboard.jsp");
+                response.sendRedirect("adminDashboard");
             } else {
                 // Validación inteligente de carrito activo
                 List<ItemCarrito> carrito = (List<ItemCarrito>) session.getAttribute("carrito");

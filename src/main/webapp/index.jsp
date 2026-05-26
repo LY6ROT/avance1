@@ -60,7 +60,7 @@
                         <h1>BIENVENIDO A <span class="resaltado">GYM-MAX</span></h1>
                         <p>La red de gimnasios más grande de Lima. Tu transformación empieza hoy.</p>
                         <div class="botones-hero mt-4">
-                            <a href="gimnasios.jsp" class="btn-principal">BUSCAR SEDE</a>
+                            <a href="${pageContext.request.contextPath}/SedesServlet" class="btn btn-warning fw-bold rounded-pill">Buscar Sede</a>
                             <a href="Nosotros.jsp" class="btn-scroll">CONÓCENOS</a> 
                         </div>
                     </div>

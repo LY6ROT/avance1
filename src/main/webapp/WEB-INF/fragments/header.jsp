@@ -44,11 +44,26 @@
                         <i class="fa-solid fa-user me-1"></i> <%= userNav.getNombres()%>
                     </span>
 
+                    <span style="color: #FFD700; font-weight: bold; margin-right: 10px; font-size: 0.95rem;">
+                        <i class="fa-solid fa-user me-1"></i> <%= userNav.getNombres()%>
+                    </span>
+
                     <% if ("ADMIN".equals(userNav.getRol())) { %>
-                    <a href="${pageContext.request.contextPath}/adminDashboard.jsp" class="btn btn-sm btn-outline-light fw-bold">Panel Admin</a>
+                    <a href="${pageContext.request.contextPath}/AdminDashboard"
+                       class="btn btn-sm btn-outline-light fw-bold rounded-pill border-2">
+                        Panel de Control
+                    </a>
                     <% } else { %>
-                    <a href="${pageContext.request.contextPath}/DashboardSocio" class="btn btn-sm btn-outline-light fw-bold">Mi Dashboard</a>
+                    <a href="${pageContext.request.contextPath}/DashboardSocio"
+                       class="btn btn-sm btn-outline-light fw-bold rounded-pill border-2">
+                        Mi Dashboard
+                    </a>
                     <% } %>
+
+                    <a href="${pageContext.request.contextPath}/LogoutController"
+                       class="btn btn-sm btn-outline-danger fw-bold rounded-pill border-2 ms-2">
+                        Salir
+                    </a>
 
                     <a href="${pageContext.request.contextPath}/LogoutController" class="btn btn-sm btn-outline-danger fw-bold rounded-pill border-2 ms-2">Salir</a>
                     <% } %>
@@ -103,55 +118,55 @@
         </div>
         <% } %>
     </div>
-   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-<%
-    // Leemos las variables desde el Servlet
-    String alertaCarrito = (String) session.getAttribute("alertaCarrito");
-    Boolean abrirCarrito = (Boolean) session.getAttribute("abrirCarrito");
-    
-    // 1. Mostrar la notificación pequeña si se agregó un plan
-    if (alertaCarrito != null) {
-%>
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const Toast = Swal.mixin({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            background: '#1a1a1a', 
-            color: '#FFD700',      
-            iconColor: '#FFD700'
-        });
+    <%
+        // Leemos las variables desde el Servlet
+        String alertaCarrito = (String) session.getAttribute("alertaCarrito");
+        Boolean abrirCarrito = (Boolean) session.getAttribute("abrirCarrito");
 
-        Toast.fire({
-            icon: 'success',
-            title: '<%= alertaCarrito %>'
+        // 1. Mostrar la notificación pequeña si se agregó un plan
+        if (alertaCarrito != null) {
+    %>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                background: '#1a1a1a',
+                color: '#FFD700',
+                iconColor: '#FFD700'
+            });
+
+            Toast.fire({
+                icon: 'success',
+                title: '<%= alertaCarrito%>'
+            });
         });
-    });
-</script>
-<%
-        session.removeAttribute("alertaCarrito");
-    }
-    
-    // 2. Desplegar el Carrito (Offcanvas de Bootstrap) automáticamente
-    if (abrirCarrito != null && abrirCarrito) {
-%>
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        // Buscamos el panel del carrito por su ID
-        var myOffcanvas = document.getElementById('offcanvasCarrito');
-        if (myOffcanvas) {
-            // Usamos la API de Bootstrap para forzar su apertura
-            var bsOffcanvas = new bootstrap.Offcanvas(myOffcanvas);
-            bsOffcanvas.show();
+    </script>
+    <%
+            session.removeAttribute("alertaCarrito");
         }
-    });
-</script>
-<%
-        session.removeAttribute("abrirCarrito"); // Lo borramos para que no se abra solo al navegar
-    }
-%>
+
+        // 2. Desplegar el Carrito (Offcanvas de Bootstrap) automáticamente
+        if (abrirCarrito != null && abrirCarrito) {
+    %>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Buscamos el panel del carrito por su ID
+            var myOffcanvas = document.getElementById('offcanvasCarrito');
+            if (myOffcanvas) {
+                // Usamos la API de Bootstrap para forzar su apertura
+                var bsOffcanvas = new bootstrap.Offcanvas(myOffcanvas);
+                bsOffcanvas.show();
+            }
+        });
+    </script>
+    <%
+            session.removeAttribute("abrirCarrito"); // Lo borramos para que no se abra solo al navegar
+        }
+    %>
 </div>
