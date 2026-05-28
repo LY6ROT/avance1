@@ -40,37 +40,30 @@
                     <% if (userNav == null) { %>
                     <a href="${pageContext.request.contextPath}/Login.jsp" class="btn fw-bold px-4 btn-sm" style="background-color: #FFD700; color: #000; border-radius: 8px;">LOGIN</a>
                     <% } else {%>
-                    <span style="color: #FFD700; font-weight: bold; margin-right: 10px; font-size: 0.95rem;">
-                        <i class="fa-solid fa-user me-1"></i> <%= userNav.getNombres()%>
-                    </span>
-
-                    <span style="color: #FFD700; font-weight: bold; margin-right: 10px; font-size: 0.95rem;">
+                    <span style="color: #FFD700; font-weight: bold; margin-right: 10px; font-size: 0.95rem; white-space: nowrap;">
                         <i class="fa-solid fa-user me-1"></i> <%= userNav.getNombres()%>
                     </span>
 
                     <% if ("ADMIN".equals(userNav.getRol())) { %>
                     <a href="${pageContext.request.contextPath}/AdminDashboard"
-                       class="btn btn-sm btn-outline-light fw-bold rounded-pill border-2">
+                       class="btn btn-sm btn-outline-light fw-bold rounded-pill border-2 text-nowrap">
                         Panel de Control
                     </a>
                     <% } else { %>
                     <a href="${pageContext.request.contextPath}/DashboardSocio"
-                       class="btn btn-sm btn-outline-light fw-bold rounded-pill border-2">
+                       class="btn btn-sm btn-outline-light fw-bold rounded-pill border-2 text-nowrap">
                         Mi Dashboard
                     </a>
                     <% } %>
 
                     <a href="${pageContext.request.contextPath}/LogoutController"
-                       class="btn btn-sm btn-outline-danger fw-bold rounded-pill border-2 ms-2">
+                       class="btn btn-sm btn-outline-danger fw-bold rounded-pill border-2 ms-2 text-nowrap">
                         Salir
                     </a>
-
-                    <a href="${pageContext.request.contextPath}/LogoutController" class="btn btn-sm btn-outline-danger fw-bold rounded-pill border-2 ms-2">Salir</a>
                     <% } %>
                 </li>
             </ul>
         </div>
-    </div>
 </nav>
 
 <div class="offcanvas offcanvas-end bg-dark text-white" tabindex="-1" id="offcanvasCarrito" style="border-left: 2px solid #FFD700;">

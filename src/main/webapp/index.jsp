@@ -51,17 +51,17 @@
                 <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
                 <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
                 <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
-            </div>
-            
-            <div class="carousel-inner">
-                <div class="carousel-item active">
+            </div>
+            
+            <div class="carousel-inner">
+                <div class="carousel-item active">
                     <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=2070&auto=format&fit=crop" class="d-block w-100" alt="Gimnasio">
                     <div class="carousel-caption d-none d-md-block">
-                        <h1>BIENVENIDO A <span class="resaltado">GYM-MAX</span></h1>
+                        <h1>BIENVENIDO A <span class="resaltado text-warning">GYM-MAX</span></h1>
                         <p>La red de gimnasios más grande de Lima. Tu transformación empieza hoy.</p>
-                        <div class="botones-hero mt-4">
-                            <a href="${pageContext.request.contextPath}/SedesServlet" class="btn btn-warning fw-bold rounded-pill">Buscar Sede</a>
-                            <a href="Nosotros.jsp" class="btn-scroll">CONÓCENOS</a> 
+                        <div class="botones-hero mt-4 d-flex justify-content-center gap-3">
+                            <a href="${pageContext.request.contextPath}/Gimnasios" class="btn btn-warning fw-bold rounded-pill px-4 py-2 text-dark">Buscar Sede</a>
+                            <a href="Nosotros.jsp" class="btn btn-outline-light fw-bold rounded-pill px-4 py-2">CONÓCENOS</a> 
                         </div>
                     </div>
                 </div>
@@ -69,10 +69,10 @@
                 <div class="carousel-item">
                     <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=2070&auto=format&fit=crop" class="d-block w-100" alt="Entrenamiento">
                     <div class="carousel-caption d-none d-md-block">
-                        <h1>ENTRENA SIN <span class="resaltado">LÍMITES</span></h1>
+                        <h1>ENTRENA SIN <span class="resaltado text-warning">LÍMITES</span></h1>
                         <p>Accede a más de 20 sedes con tu misma membresía.</p>
-                        <div class="botones-hero mt-4">
-                            <a href="registro.jsp" class="btn-principal">ÚNETE AHORA</a>
+                        <div class="botones-hero mt-4 d-flex justify-content-center">
+                            <a href="registro.jsp" class="btn btn-warning fw-bold rounded-pill px-4 py-2 text-dark">ÚNETE AHORA</a>
                         </div>
                     </div>
                 </div>
@@ -80,10 +80,10 @@
                 <div class="carousel-item">
                     <img src="https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=2070&auto=format&fit=crop" class="d-block w-100" alt="Pesas">
                     <div class="carousel-caption d-none d-md-block">
-                        <h1>EQUIPAMIENTO <span class="resaltado">PREMIUM</span></h1>
+                        <h1>EQUIPAMIENTO <span class="resaltado text-warning">PREMIUM</span></h1>
                         <p>Maquinaria de última generación para mejores resultados.</p>
-                        <div class="botones-hero mt-4">
-                            <a href="gimnasios.jsp" class="btn-scroll">VER CLASES</a>
+                        <div class="botones-hero mt-4 d-flex justify-content-center gap-3">
+                            <a href="${pageContext.request.contextPath}/Gimnasios" class="btn btn-warning fw-bold rounded-pill px-4 py-2 text-dark">VER CLASES</a>
                         </div>
                     </div>
                 </div>

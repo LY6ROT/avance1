@@ -10,7 +10,9 @@ import java.util.List;
 
 public class SedeDAO {
 
-    // Listar todo el catálogo
+    // =========================================================
+    // LISTAR TODO EL CATÁLOGO
+    // =========================================================
     public List<Sede> listarSedes() {
         List<Sede> lista = new ArrayList<>();
         String sql = "SELECT id_sede, nombre, direccion, distrito, telefono, hora_apertura, hora_cierre, capacidad, imagen_url, descripcion FROM SEDE";
@@ -28,7 +30,9 @@ public class SedeDAO {
         return lista;
     }
 
-    // LÓGICA DEL BUSCADOR: Filtrar por nombre o por distrito
+    // =========================================================
+    // LÓGICA DEL BUSCADOR
+    // =========================================================
     public List<Sede> buscarSedes(String texto) {
         List<Sede> lista = new ArrayList<>();
         String sql = "SELECT id_sede, nombre, direccion, distrito, telefono, hora_apertura, hora_cierre, capacidad, imagen_url, descripcion " +
@@ -52,7 +56,9 @@ public class SedeDAO {
         return lista;
     }
 
-    // Obtener una única sede por su ID (Para la sección Ver Detalle)
+    // =========================================================
+    // OBTENER SEDE POR ID
+    // =========================================================
     public Sede obtenerSedePorId(int id) {
         Sede sede = null;
         String sql = "SELECT id_sede, nombre, direccion, distrito, telefono, hora_apertura, hora_cierre, capacidad, imagen_url, descripcion FROM SEDE WHERE id_sede = ?";
@@ -72,7 +78,96 @@ public class SedeDAO {
         return sede;
     }
 
-    // Helper interno para no repetir código de mapeo
+    // =========================================================
+    // REGISTRAR NUEVA SEDE (ADMIN)
+    // =========================================================
+    public boolean registrarSede(String nombre, String direccion, String distrito, String telefono, 
+                                 String horaApertura, String horaCierre, int capacidad, 
+                                 String imagenUrl, String descripcion) {
+        boolean exito = false;
+        String sql = "INSERT INTO SEDE (nombre, direccion, distrito, telefono, hora_apertura, hora_cierre, capacidad, imagen_url, descripcion) " +
+                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        try (Connection con = ConexionDB.getConexion();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            
+            ps.setString(1, nombre);
+            ps.setString(2, direccion);
+            ps.setString(3, distrito);
+            ps.setString(4, telefono);
+            // Convertimos la hora HH:mm que manda el formulario HTML a formato SQL HH:mm:ss
+            ps.setString(5, horaApertura.length() == 5 ? horaApertura + ":00" : horaApertura);
+            ps.setString(6, horaCierre.length() == 5 ? horaCierre + ":00" : horaCierre);
+            ps.setInt(7, capacidad);
+            ps.setString(8, imagenUrl);
+            ps.setString(9, descripcion);
+
+            if (ps.executeUpdate() > 0) {
+                exito = true;
+            }
+        } catch (Exception e) {
+            System.out.println("Error al registrar sede: " + e.getMessage());
+        }
+        return exito;
+    }
+
+    // =========================================================
+    // ACTUALIZAR SEDE (ADMIN)
+    // =========================================================
+    public boolean actualizarSede(int idSede, String nombre, String direccion, String distrito, String telefono, 
+                                  String horaApertura, String horaCierre, int capacidad, 
+                                  String imagenUrl, String descripcion) {
+        boolean exito = false;
+        String sql = "UPDATE SEDE SET nombre=?, direccion=?, distrito=?, telefono=?, hora_apertura=?, " +
+                     "hora_cierre=?, capacidad=?, imagen_url=?, descripcion=? WHERE id_sede=?";
+
+        try (Connection con = ConexionDB.getConexion();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            
+            ps.setString(1, nombre);
+            ps.setString(2, direccion);
+            ps.setString(3, distrito);
+            ps.setString(4, telefono);
+            ps.setString(5, horaApertura.length() == 5 ? horaApertura + ":00" : horaApertura);
+            ps.setString(6, horaCierre.length() == 5 ? horaCierre + ":00" : horaCierre);
+            ps.setInt(7, capacidad);
+            ps.setString(8, imagenUrl);
+            ps.setString(9, descripcion);
+            ps.setInt(10, idSede);
+
+            if (ps.executeUpdate() > 0) {
+                exito = true;
+            }
+        } catch (Exception e) {
+            System.out.println("Error al actualizar sede: " + e.getMessage());
+        }
+        return exito;
+    }
+
+    // =========================================================
+    // ELIMINAR SEDE (ADMIN)
+    // =========================================================
+    public boolean eliminarSede(int idSede) {
+        boolean exito = false;
+        String sql = "DELETE FROM SEDE WHERE id_sede = ?";
+        
+        try (Connection con = ConexionDB.getConexion();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            
+            ps.setInt(1, idSede);
+            if (ps.executeUpdate() > 0) {
+                exito = true;
+            }
+        } catch (Exception e) {
+            // Saltará si la sede tiene socios, clases o asistencias vinculadas (Llave foránea)
+            System.out.println("Error al eliminar sede (Posible FK): " + e.getMessage());
+        }
+        return exito;
+    }
+
+    // =========================================================
+    // HELPER PARA MAPEAR (INTERNO)
+    // =========================================================
     private Sede mapearSede(ResultSet rs) throws Exception {
         Sede s = new Sede();
         s.setIdSede(rs.getInt("id_sede"));

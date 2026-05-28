@@ -10,14 +10,15 @@ import java.util.List;
 
 public class AdminDAO {
 
- // =========================================================
+// =========================================================
     // LISTAR TODOS LOS SOCIOS PARA LA TABLA DE GESTIÓN (SIN DNI)
     // =========================================================
     public java.util.List<SocioDTO> listarTodosLosSocios() {
         java.util.List<SocioDTO> lista = new java.util.ArrayList<>();
         
-        // Quitamos u.dni de la consulta SQL
-        String sql = "SELECT s.id_socio, u.id_usuario, u.nombres, u.apellidos, u.correo " +
+        // Agregamos una subconsulta para contar si tiene membresías activas reales
+        String sql = "SELECT s.id_socio, u.id_usuario, u.nombres, u.apellidos, u.correo, " +
+                     "(SELECT COUNT(*) FROM MEMBRESIA m WHERE m.id_socio = s.id_socio AND m.estado = 'ACT') AS membresias_activas " +
                      "FROM SOCIO s INNER JOIN USUARIO u ON s.id_usuario = u.id_usuario";
                      
         try (Connection con = ConexionDB.getConexion();
@@ -33,12 +34,16 @@ public class AdminDAO {
                 
                 // Unimos nombre y apellido para la vista
                 socio.setNombreCompleto(rs.getString("nombres") + " " + rs.getString("apellidos"));
-                
                 socio.setCorreo(rs.getString("correo"));
-                
-                // Como no hay DNI en la BD, mandamos un texto por defecto
                 socio.setDni("No registrado");
-                socio.setFechaRegistro("Activo"); 
+                
+                // LÓGICA DE ESTADO (VERDE/ROJO): 
+                // Si tiene membresías activas, enviamos texto (Activo). Si es 0, enviamos vacío (Inactivo).
+                if (rs.getInt("membresias_activas") > 0) {
+                    socio.setFechaRegistro("Activo"); 
+                } else {
+                    socio.setFechaRegistro(""); 
+                }
                 
                 lista.add(socio);
             }
@@ -141,4 +146,112 @@ public class AdminDAO {
         }
         return exito;
     }
+    // =========================================================
+    // BUSCAR SOCIOS POR NOMBRE, APELLIDO O CORREO
+    // =========================================================
+    public List<SocioDTO> buscarSocios(String texto) {
+        List<SocioDTO> lista = new ArrayList<>();
+
+        // Misma subconsulta para mantener el estado real en la búsqueda
+        String sql = "SELECT s.id_socio, u.id_usuario, u.nombres, u.apellidos, u.correo, " +
+                     "(SELECT COUNT(*) FROM MEMBRESIA m WHERE m.id_socio = s.id_socio AND m.estado = 'ACT') AS membresias_activas " +
+                     "FROM SOCIO s " +
+                     "INNER JOIN USUARIO u ON s.id_usuario = u.id_usuario " +
+                     "WHERE u.nombres LIKE ? " +
+                     "OR u.apellidos LIKE ? " +
+                     "OR u.correo LIKE ?";
+
+        try (Connection con = ConexionDB.getConexion();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            String filtro = "%" + texto + "%";
+            ps.setString(1, filtro);
+            ps.setString(2, filtro);
+            ps.setString(3, filtro);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                SocioDTO socio = new SocioDTO();
+                socio.setIdSocio(rs.getInt("id_socio"));
+                socio.setIdUsuario(rs.getInt("id_usuario"));
+                socio.setNombres(rs.getString("nombres"));
+                socio.setApellidos(rs.getString("apellidos"));
+                socio.setNombreCompleto(rs.getString("nombres") + " " + rs.getString("apellidos"));
+                socio.setCorreo(rs.getString("correo"));
+                socio.setDni("No registrado");
+
+                // LÓGICA DE ESTADO
+                if (rs.getInt("membresias_activas") > 0) {
+                    socio.setFechaRegistro("Activo");
+                } else {
+                    socio.setFechaRegistro("");
+                }
+
+                lista.add(socio);
+            }
+        } catch (Exception e) {
+            System.out.println("Error al buscar socios: " + e.getMessage());
+        }
+        return lista;
+    }
+
+    // =========================================================
+    // REGISTRAR NUEVO SOCIO
+    // =========================================================
+    public boolean registrarSocio(String nombres,
+                                  String apellidos,
+                                  String correo,
+                                  String dni,
+                                  String password) {
+
+        boolean exito = false;
+
+        // Se agrega el rol por defecto 'SOCIO'
+        String sqlUsuario = "INSERT INTO USUARIO " +
+                            "(nombres, apellidos, correo, password, rol) " +
+                            "VALUES (?, ?, ?, ?, 'SOCIO')";
+
+        // Se agrega la inserción del DNI para evitar el error de Default Value
+        String sqlSocio = "INSERT INTO SOCIO (id_usuario, dni, fecha_reg) VALUES (?, ?, CURDATE())";
+
+        try (Connection con = ConexionDB.getConexion()) {
+            con.setAutoCommit(false);
+
+            // 1. Insertar en USUARIO
+            try (PreparedStatement psUsuario = con.prepareStatement(sqlUsuario, PreparedStatement.RETURN_GENERATED_KEYS)) {
+                psUsuario.setString(1, nombres);
+                psUsuario.setString(2, apellidos);
+                psUsuario.setString(3, correo);
+                psUsuario.setString(4, password);
+
+                if (psUsuario.executeUpdate() > 0) {
+                    try (ResultSet rs = psUsuario.getGeneratedKeys()) {
+                        if (rs.next()) {
+                            int idUsuario = rs.getInt(1);
+
+                            // 2. Insertar en SOCIO con el DNI
+                            try (PreparedStatement psSocio = con.prepareStatement(sqlSocio)) {
+                                psSocio.setInt(1, idUsuario);
+                                psSocio.setString(2, dni);
+                                
+                                psSocio.executeUpdate();
+                                con.commit();
+                                exito = true;
+                            }
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                con.rollback(); // Deshacer si falla el Socio
+                System.out.println("Error al insertar en cascada: " + e.getMessage());
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error al registrar socio: " + e.getMessage());
+        }
+
+        return exito;
+    }
+    
 }

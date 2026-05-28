@@ -16,57 +16,33 @@
     <body>
 
         <aside class="admin-sidebar">
-            <div class="admin-logo text-white">Gym<span style="color: #FFD700;">Max</span></div>
-            <div class="admin-subtitle">Administrador</div>
+        <div class="admin-logo text-white">Gym<span style="color: #FFD700;">Max</span></div>
+        <div class="admin-subtitle">Administrador</div>
 
+        <ul class="admin-nav">
+            <li><a class="nav-link text-white" href="${pageContext.request.contextPath}/AdminDashboard">
+                    <i class="fa-solid fa-chart-line me-2"></i> Panel de Control</a></li>
+            <li><a class="nav-link text-white" href="${pageContext.request.contextPath}/AdminSocios">
+                    <i class="fa-solid fa-users me-2"></i> Socios</a></li>
+            <li><a class="nav-link text-white" href="${pageContext.request.contextPath}/AdminSedes">
+                    <i class="fa-solid fa-location-dot me-2"></i> Sedes</a></li>
+            <li><a class="nav-link text-white" href="${pageContext.request.contextPath}/AdminMembresias">
+                    <i class="fa-solid fa-award me-2"></i> Membresías</a></li>
+            <li><a class="nav-link text-white" href="${pageContext.request.contextPath}/AdminClases">
+                    <i class="fa-solid fa-dumbbell me-2"></i> Clases</a></li>
+            <li><a class="nav-link text-white" href="${pageContext.request.contextPath}/AdminPagos">
+                    <i class="fa-solid fa-money-bill-wave me-2"></i> Pagos</a></li>
+            <li><a class="nav-link text-white" href="${pageContext.request.contextPath}/reportes.jsp">
+                    <i class="fa-solid fa-file-invoice me-2"></i> Reportes</a></li>
+        </ul>
+
+        <div class="admin-logout mt-auto">
             <ul class="admin-nav">
-                <li>
-                    <a class="nav-link text-white" href="${pageContext.request.contextPath}/AdminDashboard">
-                        <i class="fa-solid fa-chart-line me-2"></i> Panel de Control
-                    </a>
-                </li>
-                <li>
-                    <a class="nav-link text-white" href="${pageContext.request.contextPath}/AdminSocios">
-                        <i class="fa-solid fa-users me-2"></i> Gestión de Socios
-                    </a>
-                </li>
-                <li>
-                    <a class="nav-link text-white" href="#">
-                        <i class="fa-solid fa-award me-2"></i> Membresías
-                    </a>
-                </li>
-                <li>
-                    <a class="nav-link text-white rounded px-3 py-2 btn-outline-secondary text-start" href="${pageContext.request.contextPath}/AdminClases">
-                        <i class="fa-solid fa-dumbbell me-2"></i> Clases
-                    </a>
-                </li>
-                <li>
-                    <a class="nav-link text-white" href="#">
-                        <i class="fa-solid fa-money-bill-wave me-2"></i> Pagos
-                    </a>
-                </li>
-                <li>
-                    <a class="nav-link text-white" href="${pageContext.request.contextPath}/reportes.jsp">
-                        <i class="fa-solid fa-chart-line me-2"></i> Reportes
-                    </a>
-                </li>
+                <li><a href="${pageContext.request.contextPath}/index.jsp" class="text-white"><i class="fa-solid fa-house me-2"></i> Volver al Menú</a></li>
+                <li><a href="${pageContext.request.contextPath}/LogoutController" class="text-danger"><i class="fa-solid fa-arrow-right-from-bracket me-2"></i> Cerrar Sesión</a></li>
             </ul>
-
-            <div class="admin-logout mt-auto">
-                <ul class="admin-nav">
-                    <li>
-                        <a href="${pageContext.request.contextPath}/index.jsp" class="nav-link text-white">
-                            <i class="fa-solid fa-house me-2"></i> Volver al Menú
-                        </a>
-                    </li>
-                    <li>
-                        <a href="${pageContext.request.contextPath}/LogoutController" class="nav-link text-danger">
-                            <i class="fa-solid fa-arrow-right-from-bracket me-2"></i> Cerrar Sesión
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </aside>
+        </div>
+    </aside>
 
         <main class="admin-content">
             <div class="d-flex justify-content-between align-items-center mb-4">
@@ -125,17 +101,30 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="admin-table-container h-100">
+                    <div class="admin-table-container h-100 d-flex flex-column">
                         <h6 class="fw-bold mb-4">Actividad reciente</h6>
-                        <ul class="list-unstyled mb-0 small">
-                            <li class="mb-3"><i class="fa-solid fa-user-plus text-success me-2"></i> Juan López se registró</li>
-                            <li class="mb-3"><i class="fa-solid fa-money-check-dollar text-primary me-2"></i> Pago de S/ 99 — Plan Premium</li>
-                            <li class="mb-3"><i class="fa-regular fa-calendar-check text-warning me-2"></i> 8 nuevas reservas</li>
-                            <li class="mb-0"><i class="fa-solid fa-triangle-exclamation text-danger me-2"></i> 3 membresías vencidas</li>
-                        </ul>
+                        <div class="flex-grow-1">
+                            <c:choose>
+                                <c:when test="${not empty listaActividad}">
+                                    <ul class="list-unstyled mb-0 small">
+                                        <c:forEach var="actividad" items="${listaActividad}">
+                                            <li class="mb-3">${actividad}</li>
+                                            </c:forEach>
+                                    </ul>
+                                </c:when>
+                                <c:otherwise>
+                                    <ul class="list-unstyled mb-0 small">
+                                        <li class="mb-3"><i class="fa-solid fa-user-plus text-success me-2"></i> Juan López se registró</li>
+                                        <li class="mb-3"><i class="fa-solid fa-money-check-dollar text-primary me-2"></i> Pago de S/ 89.90 — Plan Basic</li>
+                                        <li class="mb-3"><i class="fa-solid fa-user-plus text-success me-2"></i> Maria Santos se registró</li>
+                                        <li class="mb-3"><i class="fa-solid fa-money-check-dollar text-primary me-2"></i> Pago de S/ 149.90 — Plan Premium</li>
+                                        <li class="mb-0"><i class="fa-regular fa-calendar-check text-warning me-2"></i> 2 nuevas reservas confirmadas</li>
+                                    </ul>
+                                </c:otherwise>
+                            </c:choose>
+                        </div>
                     </div>
                 </div>
-            </div>
         </main>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

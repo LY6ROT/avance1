@@ -25,119 +25,142 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Poppins:wght@300;400;600;800&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/admin.css">
+    <style>
+        /* REGLAS FUERTES PARA FORZAR EL BLOQUE BLANCO */
+        .panel-blanco {
+            background-color: #ffffff !important;
+            color: #212529 !important;
+        }
+        .panel-blanco th, .panel-blanco td {
+            background-color: #ffffff !important;
+            color: #212529 !important;
+        }
+        .panel-blanco thead th {
+            background-color: #f8f9fa !important;
+            border-bottom: 2px solid #dee2e6 !important;
+        }
+        .panel-blanco tbody tr {
+            border-bottom: 1px solid #dee2e6 !important;
+        }
+        .panel-blanco tbody tr:hover td {
+            background-color: #f8f9fa !important;
+            color: #212529 !important;
+        }
+    </style>
 </head>
-<body class="bg-dark text-white">
+<body>
 
-    <%@include file="/WEB-INF/fragments/header.jsp" %>
+    <aside class="admin-sidebar">
+        <div class="admin-logo text-white">Gym<span style="color: #FFD700;">Max</span></div>
+        <div class="admin-subtitle">Administrador</div>
 
-    <main class="container-fluid py-5 mt-5 px-lg-5">
-        <div class="row g-4">
-            
-            <div class="col-md-2">
-                <div class="bg-black p-3 rounded-4 border border-secondary h-100 shadow-lg">
-                    <h5 class="text-warning fw-bold mb-4 text-center" style="font-family: 'Anton', sans-serif; letter-spacing: 1px;">PANEL ADMIN</h5>
-                    <ul class="nav flex-column gap-2 admin-nav">
-                        <li class="nav-item">
-                            <a href="${pageContext.request.contextPath}/AdminDashboard" class="nav-link text-white rounded px-3 py-2 btn-outline-secondary text-start"><i class="fa-solid fa-chart-line me-2"></i> Panel de Control</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="${pageContext.request.contextPath}/AdminSocios" class="nav-link text-white rounded px-3 py-2 btn-outline-secondary text-start"><i class="fa-solid fa-users me-2"></i> Socios</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="${pageContext.request.contextPath}/AdminClases" class="nav-link text-dark bg-warning fw-bold rounded px-3 py-2 shadow-sm"><i class="fa-solid fa-dumbbell me-2"></i> Clases</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+        <ul class="admin-nav">
+            <li><a class="nav-link text-white" href="${pageContext.request.contextPath}/AdminDashboard">
+                    <i class="fa-solid fa-chart-line me-2"></i> Panel de Control</a></li>
+            <li><a class="nav-link text-white" href="${pageContext.request.contextPath}/AdminSocios">
+                    <i class="fa-solid fa-users me-2"></i> Socios</a></li>
+            <li><a class="nav-link text-white" href="${pageContext.request.contextPath}/AdminSedes">
+                    <i class="fa-solid fa-location-dot me-2"></i> Sedes</a></li>
+            <li><a class="nav-link text-white" href="${pageContext.request.contextPath}/AdminMembresias">
+                    <i class="fa-solid fa-award me-2"></i> Membresías</a></li>
+            <li><a class="nav-link text-white" href="${pageContext.request.contextPath}/AdminClases">
+                    <i class="fa-solid fa-dumbbell me-2"></i> Clases</a></li>
+            <li><a class="nav-link text-white" href="${pageContext.request.contextPath}/AdminPagos">
+                    <i class="fa-solid fa-money-bill-wave me-2"></i> Pagos</a></li>
+            <li><a class="nav-link text-white" href="${pageContext.request.contextPath}/reportes.jsp">
+                    <i class="fa-solid fa-file-invoice me-2"></i> Reportes</a></li>
+        </ul>
 
-            <div class="col-md-10">
-                <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4">
-                    <div class="d-flex align-items-center">
-                        <a href="${pageContext.request.contextPath}/AdminDashboard" class="text-warning text-decoration-none me-3 fs-3" style="transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
-                            <i class="fa-solid fa-circle-arrow-left"></i>
-                        </a>
-                        <h2 style="font-family: 'Anton', sans-serif; letter-spacing: 1px; margin-bottom: 0;">GESTIÓN DE <span class="text-warning">CLASES</span></h2>
-                    </div>
-                    <button type="button" class="btn btn-warning text-dark fw-bold mt-3 mt-md-0 shadow" data-bs-toggle="modal" data-bs-target="#modalNuevaClase">
-                        <i class="fa-solid fa-plus me-2"></i> Nueva Clase
-                    </button>
-                </div>
+        <div class="admin-logout mt-auto">
+            <ul class="admin-nav">
+                <li><a href="${pageContext.request.contextPath}/index.jsp" class="text-white"><i class="fa-solid fa-house me-2"></i> Volver al Menú</a></li>
+                <li><a href="${pageContext.request.contextPath}/LogoutController" class="text-danger"><i class="fa-solid fa-arrow-right-from-bracket me-2"></i> Cerrar Sesión</a></li>
+            </ul>
+        </div>
+    </aside>
 
-                <div class="card bg-black border-secondary shadow-lg rounded-4 overflow-hidden">
-                    <div class="card-body p-0 table-responsive">
-                        <table class="table table-dark table-hover mb-0 align-middle" style="min-width: 900px;">
-                            <thead class="table-secondary text-dark">
-                                <tr>
-                                    <th class="ps-4">ID</th>
-                                    <th>Sede</th>
-                                    <th>Nombre / Disciplina</th>
-                                    <th>Instructor</th>
-                                    <th>Hora Inicio</th>
-                                    <th>Cupo Max.</th>
-                                    <th>Estado</th>
-                                    <th class="text-center pe-4">Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody class="small">
-                                <%
-                                    if (listaClases != null && !listaClases.isEmpty()) {
-                                        for (Clase c : listaClases) {
-                                            String nombreSede = "No asignada";
-                                            if (listaSedes != null) {
-                                                for (Sede s : listaSedes) {
-                                                    if (s.getIdSede() == c.getIdSede()) {
-                                                        nombreSede = s.getNombre();
-                                                        break;
-                                                    }
-                                                }
+    <main class="admin-content" style="background-color: #f4f6f9 !important; min-height: 100vh;">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="fw-bold mb-0" style="color: #212529 !important;">Gestión de Clases</h2>
+            <button type="button" class="btn btn-warning text-dark fw-bold shadow" data-bs-toggle="modal" data-bs-target="#modalNuevaClase" style="border-radius: 6px;">
+                <i class="fa-solid fa-plus me-2"></i> Nueva Clase
+            </button>
+        </div>
+
+        <div class="panel-blanco p-4 shadow-sm" style="border-radius: 12px; border: 1px solid #e0e0e0;">
+            <div class="table-responsive rounded" style="border: 1px solid #dee2e6;">
+                <table class="table align-middle mb-0 panel-blanco">
+                    <thead>
+                        <tr>
+                            <th class="ps-4 fw-bold" style="padding: 12px 8px;">ID</th>
+                            <th class="fw-bold" style="padding: 12px 8px;">Sede</th>
+                            <th class="fw-bold" style="padding: 12px 8px;">Nombre / Disciplina</th>
+                            <th class="fw-bold" style="padding: 12px 8px;">Instructor</th>
+                            <th class="fw-bold" style="padding: 12px 8px;">Hora Inicio</th>
+                            <th class="fw-bold" style="padding: 12px 8px;">Cupo Max.</th>
+                            <th class="fw-bold" style="padding: 12px 8px;">Estado</th>
+                            <th class="text-center pe-4 fw-bold" style="padding: 12px 8px;">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody class="small">
+                        <%
+                            if (listaClases != null && !listaClases.isEmpty()) {
+                                for (Clase c : listaClases) {
+                                    String nombreSede = "No asignada";
+                                    if (listaSedes != null) {
+                                        for (Sede s : listaSedes) {
+                                            if (s.getIdSede() == c.getIdSede()) {
+                                                nombreSede = s.getNombre();
+                                                break;
                                             }
-                                %>
-                                    <tr>
-                                        <td class="text-secondary ps-4">C-<%= String.format("%04d", c.getIdClase()) %></td>
-                                        <td><span class="badge bg-dark border border-secondary text-light"><i class="fa-solid fa-location-dot me-1 text-warning"></i> <%= nombreSede %></span></td>
-                                        <td class="fw-bold"><%= c.getNombre() %> <span class="badge bg-secondary ms-2" style="font-size: 0.65rem;"><%= c.getTipo() %></span></td>
-                                        <td><i class="fa-solid fa-user-tie text-secondary me-2"></i><%= c.getInstructor() %></td>
-                                        <td class="text-warning fw-bold"><i class="fa-solid fa-clock me-1"></i> <%= c.getHoraInicio() != null ? c.getHoraInicio().toString().substring(0, 5) : "--:--" %></td>
-                                        <td><%= c.getCupoMaximo() %> pax</td>
-                                        <td><span class="badge bg-success">Activa</span></td>
-                                        <td class="text-center pe-4">
-                                            <button type="button" class="btn btn-sm btn-outline-warning py-1 px-2 me-1 rounded-3 btn-edit-clase"
-                                                    data-bs-toggle="modal" data-bs-target="#modalEditarClase"
-                                                    data-id="<%= c.getIdClase() %>"
-                                                    data-nombre="<%= c.getNombre() %>"
-                                                    data-tipo="<%= c.getTipo() %>"
-                                                    data-instructor="<%= c.getInstructor() %>"
-                                                    data-hora="<%= c.getHoraInicio() != null ? c.getHoraInicio().toString().substring(0,5) : "" %>"
-                                                    data-cupo="<%= c.getCupoMaximo() %>"
-                                                    data-sede="<%= c.getIdSede() %>">
-                                                <i class="fa-solid fa-pen"></i>
-                                            </button>
-                                            <form action="${pageContext.request.contextPath}/AdminClases" method="POST" class="d-inline" onsubmit="return confirm('¿Está seguro de eliminar esta clase del sistema?');">
-                                                <input type="hidden" name="accion" value="eliminar">
-                                                <input type="hidden" name="idClase" value="<%= c.getIdClase() %>">
-                                                <button type="submit" class="btn btn-sm btn-outline-danger py-1 px-2 rounded-3">
-                                                    <i class="fa-solid fa-trash"></i>
-                                                </button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                <%
                                         }
-                                    } else {
-                                %>
-                                    <tr>
-                                        <td colspan="8" class="text-center py-5 text-secondary">
-                                            <i class="fa-solid fa-calendar-xmark fa-3x mb-3 d-block text-muted"></i>
-                                            <h5>No hay clases programadas</h5>
-                                        </td>
-                                    </tr>
-                                <%
                                     }
-                                %>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+                        %>
+                            <tr>
+                                <td class="fw-bold ps-4 text-secondary">C-<%= String.format("%04d", c.getIdClase()) %></td>
+                                <td><span class="badge border text-dark" style="background-color: #f8f9fa !important; border-color: #ced4da !important;"><i class="fa-solid fa-location-dot me-1 text-secondary"></i> <%= nombreSede %></span></td>
+                                <td class="fw-bold text-dark"><%= c.getNombre() %> <span class="badge border ms-2 text-dark" style="background-color: #e9ecef !important; font-size: 0.65rem;"><%= c.getTipo() %></span></td>
+                                <td class="text-dark"><i class="fa-solid fa-user-tie text-secondary me-2"></i><%= c.getInstructor() %></td>
+                                <td class="text-dark fw-bold"><i class="fa-regular fa-clock me-1 text-secondary"></i> <%= c.getHoraInicio() != null ? c.getHoraInicio().toString().substring(0, 5) : "--:--" %></td>
+                                <td class="text-dark"><%= c.getCupoMaximo() %> pax</td>
+                                <td><span class="badge" style="background-color: #d1e7dd !important; color: #0f5132 !important; border: 1px solid #badbcc !important; font-weight: bold;">Activa</span></td>
+                                <td class="text-center pe-4">
+                                    <button type="button" class="btn btn-sm btn-light border-secondary btn-edit-clase me-1 text-dark"
+                                            data-bs-toggle="modal" data-bs-target="#modalEditarClase"
+                                            data-id="<%= c.getIdClase() %>"
+                                            data-nombre="<%= c.getNombre() %>"
+                                            data-tipo="<%= c.getTipo() %>"
+                                            data-instructor="<%= c.getInstructor() %>"
+                                            data-hora="<%= c.getHoraInicio() != null ? c.getHoraInicio().toString().substring(0, 5) : "" %>"
+                                            data-cupo="<%= c.getCupoMaximo() %>"
+                                            data-sede="<%= c.getIdSede() %>">
+                                        <i class="fa-solid fa-pen-to-square"></i>
+                                    </button>
+                                    <form action="${pageContext.request.contextPath}/AdminClases" method="POST" class="d-inline" onsubmit="return confirm('¿Está seguro de eliminar esta clase del sistema?');">
+                                        <input type="hidden" name="accion" value="eliminar">
+                                        <input type="hidden" name="idClase" value="<%= c.getIdClase() %>">
+                                        <button type="submit" class="btn btn-sm btn-outline-danger py-1 px-2 rounded-3">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        <%
+                                }
+                            } else {
+                        %>
+                            <tr>
+                                <td colspan="8" class="text-center py-5 text-dark">
+                                    <i class="fa-solid fa-calendar-xmark fa-3x mb-3 d-block text-muted"></i>
+                                    <h5 class="fw-bold">No hay clases programadas</h5>
+                                    <p class="small text-secondary">Aún no se ha registrado ninguna clase en el sistema.</p>
+                                </td>
+                            </tr>
+                        <%
+                            }
+                        %>
+                    </tbody>
+                </table>
             </div>
         </div>
     </main>
