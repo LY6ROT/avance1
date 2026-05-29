@@ -12,6 +12,26 @@
 
     AdminDAO adminDAO = new AdminDAO();
     Map<String, String> stats = adminDAO.obtenerEstadisticasDashboard();
+    
+    // =======================================================
+    // LÓGICA PARA EL GRÁFICO DINÁMICO DE INGRESOS POR SEDE
+    // =======================================================
+    Map<String, Double> ingresosSede = adminDAO.obtenerIngresosPorSede();
+    String labelsSedes = "";
+    String dataSedes = "";
+    
+    if (ingresosSede == null || ingresosSede.isEmpty()) {
+        labelsSedes = "'Sin transacciones'";
+        dataSedes = "1"; // Un valor dummy para que se dibuje la dona gris
+    } else {
+        for (Map.Entry<String, Double> entry : ingresosSede.entrySet()) {
+            labelsSedes += "'" + entry.getKey() + "',";
+            dataSedes += entry.getValue() + ",";
+        }
+        // Quitamos la última coma
+        labelsSedes = labelsSedes.substring(0, labelsSedes.length() - 1);
+        dataSedes = dataSedes.substring(0, dataSedes.length() - 1);
+    }
 %>
 <!DOCTYPE html>
 <html lang="es">
@@ -133,9 +153,10 @@
                         </div>
                     </div>
                 </div>
+                
                 <div class="col-md-4">
                     <div class="panel-blanco p-4 shadow-sm h-100 d-flex flex-column">
-                        <h5 class="fw-bold text-dark mb-4"><i class="fa-solid fa-chart-pie me-2 text-secondary"></i> Planes Más Vendidos</h5>
+                        <h5 class="fw-bold text-dark mb-4"><i class="fa-solid fa-map-location-dot me-2 text-secondary"></i> Ingresos por Sede (Mes Actual)</h5>
                         <div style="flex-grow: 1; display: flex; align-items: center; justify-content: center; height: 250px;">
                             <canvas id="doughnutChart"></canvas>
                         </div>
@@ -143,14 +164,16 @@
                 </div>
             </div>
         </div>
-        </main>
+
+    </main>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            // GRÁFICO DE BARRAS
+            
+            // GRÁFICO DE BARRAS (Histórico)
             const ctxBar = document.getElementById('barChart').getContext('2d');
             new Chart(ctxBar, {
                 type: 'bar',
@@ -168,83 +191,60 @@
                 options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, grid: { borderDash: [4, 4] } }, x: { grid: { display: false } } } }
             });
 
-            // GRÁFICO CIRCULAR
+            // ==============================================================
+            // GRÁFICO CIRCULAR DINÁMICO (Conecta directo a la BD)
+            // ==============================================================
             const ctxDoughnut = document.getElementById('doughnutChart').getContext('2d');
+            
+            // Si la consulta vino vacía, pintamos gris. Si trajo datos, usamos los colores.
+            const dataVacia = [<%= dataSedes %>][0] === 1 && [<%= labelsSedes %>][0] === 'Sin transacciones';
+            const colores = dataVacia ? ['#e9ecef'] : ['#FFD700', '#212529', '#6c757d', '#dc3545', '#0dcaf0', '#198754'];
+
             new Chart(ctxDoughnut, {
                 type: 'doughnut',
                 data: {
-                    labels: ['Basic', 'Premium', 'Anual'],
+                    labels: [<%= labelsSedes %>],
                     datasets: [{
-                        data: [45, 35, 20],
-                        backgroundColor: ['#212529', '#FFD700', '#6c757d'],
+                        data: [<%= dataSedes %>],
+                        backgroundColor: colores,
                         borderWidth: 2,
                         borderColor: '#ffffff'
                     }]
                 },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, padding: 20 } } }, cutout: '70%' }
+                options: { 
+                    responsive: true, 
+                    maintainAspectRatio: false, 
+                    plugins: { 
+                        legend: { position: 'bottom', labels: { usePointStyle: true, padding: 20 } },
+                        tooltip: { enabled: !dataVacia } // Desactiva tooltip si no hay datos
+                    }, 
+                    cutout: '70%' 
+                }
             });
         });
 
-        // ==========================================
-        // LÓGICA PARA EXPORTAR PDF
-        // ==========================================
+        // FUNCIONES DE EXPORTACIÓN (Sin cambios)
         function descargarPDF() {
-            Swal.fire({
-                title: 'Generando Reporte...',
-                text: 'Por favor espera mientras creamos tu PDF.',
-                allowOutsideClick: false,
-                didOpen: () => { Swal.showLoading(); }
-            });
-
-            // Seleccionamos solo el área de los gráficos y tarjetas (evita capturar el menú lateral)
+            Swal.fire({ title: 'Generando Reporte...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); } });
             const elemento = document.getElementById('area-imprimir'); 
-            
-            const opciones = {
-                margin:       10,
-                filename:     'Reporte_Estadistico_GymMax.pdf',
-                image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { scale: 2, useCORS: true },
-                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'landscape' }
-            };
-
-            // Ejecuta la librería y guarda el PDF
-            html2pdf().set(opciones).from(elemento).save().then(() => {
-                Swal.close();
-                Swal.fire({ icon: 'success', title: '¡PDF Descargado!', text: 'El reporte se generó exitosamente.', confirmButtonColor: '#FFD700' });
-            });
+            const opciones = { margin: 10, filename: 'Reporte_Estadistico_GymMax.pdf', image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2, useCORS: true }, jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' } };
+            html2pdf().set(opciones).from(elemento).save().then(() => { Swal.close(); });
         }
 
-        // ==========================================
-        // LÓGICA PARA EXPORTAR EXCEL
-        // ==========================================
         function descargarExcel() {
-            Swal.fire({
-                title: 'Generando Excel...',
-                timer: 1000,
-                didOpen: () => { Swal.showLoading(); }
-            }).then(() => {
-                // Preparamos los datos sacados de Java para el Excel
+            Swal.fire({ title: 'Generando Excel...', timer: 1000, didOpen: () => { Swal.showLoading(); } }).then(() => {
                 const datos = [
-                    ["Reporte General de Operaciones - GymMax"],
-                    ["Fecha de generación:", new Date().toLocaleDateString()],
-                    [],
+                    ["Reporte General de Operaciones - GymMax"], ["Fecha de generación:", new Date().toLocaleDateString()], [],
                     ["Métrica", "Valor Reportado"],
                     ["Ingresos del Mes", "S/ <%= stats != null ? stats.get("ingresosMes") : "0.00" %>"],
                     ["Socios Activos", "<%= stats != null ? stats.get("sociosActivos") : "0" %>"],
                     ["Membresías por Vencer", "<%= stats != null ? stats.get("membresiasVencer") : "0" %>"],
                     ["Reservas del Día", "<%= stats != null ? stats.get("reservasHoy") : "0" %>"]
                 ];
-
-                // Usamos SheetJS para crear el libro de Excel
                 const hoja = XLSX.utils.aoa_to_sheet(datos);
-                
-                // Darle un poco de ancho a las columnas
                 hoja['!cols'] = [{ wch: 30 }, { wch: 20 }];
-
                 const libro = XLSX.utils.book_new();
                 XLSX.utils.book_append_sheet(libro, hoja, "Resumen");
-
-                // Generar y descargar el archivo
                 XLSX.writeFile(libro, "Reporte_Data_GymMax.xlsx");
             });
         }

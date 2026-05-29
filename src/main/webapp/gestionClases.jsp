@@ -63,8 +63,7 @@
                     <i class="fa-solid fa-location-dot me-2"></i> Sedes</a></li>
             <li><a class="nav-link text-white" href="${pageContext.request.contextPath}/AdminMembresias">
                     <i class="fa-solid fa-award me-2"></i> Membresías</a></li>
-            <li><a class="nav-link text-white" href="${pageContext.request.contextPath}/AdminClases">
-                    <i class="fa-solid fa-dumbbell me-2"></i> Clases</a></li>
+            <li><a class="nav-link text-dark bg-warning fw-bold rounded px-3 py-2 shadow-sm" href="${pageContext.request.contextPath}/AdminClases"><i class="fa-solid fa-dumbbell me-2"></i> Clases</a></li>
             <li><a class="nav-link text-white" href="${pageContext.request.contextPath}/AdminPagos">
                     <i class="fa-solid fa-money-bill-wave me-2"></i> Pagos</a></li>
             <li><a class="nav-link text-white" href="${pageContext.request.contextPath}/reportes.jsp">

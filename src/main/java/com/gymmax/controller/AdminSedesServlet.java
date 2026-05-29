@@ -57,7 +57,15 @@ public class AdminSedesServlet extends HttpServlet {
             String imagenUrl = request.getParameter("imagenUrl");
             String descripcion = request.getParameter("descripcion");
             
-            if (dao.registrarSede(nombre, direccion, distrito, telefono, horaApertura, horaCierre, capacidad, imagenUrl, descripcion)) {
+            // --- NUEVO: RECOGER LOS BENEFICIOS DEL FORMULARIO ---
+            String[] arrBeneficios = request.getParameterValues("beneficios");
+            String beneficiosUnidos = "";
+            if (arrBeneficios != null) {
+                beneficiosUnidos = String.join(",", arrBeneficios);
+            }
+            
+            // Pasamos 'beneficiosUnidos' al final del método
+            if (dao.registrarSede(nombre, direccion, distrito, telefono, horaApertura, horaCierre, capacidad, imagenUrl, descripcion, beneficiosUnidos)) {
                 response.sendRedirect("AdminSedes?msg=creada");
             } else {
                 response.sendRedirect("AdminSedes?msg=error_crear");
@@ -75,7 +83,15 @@ public class AdminSedesServlet extends HttpServlet {
             String imagenUrl = request.getParameter("imagenUrl");
             String descripcion = request.getParameter("descripcion");
             
-            if (dao.actualizarSede(idSede, nombre, direccion, distrito, telefono, horaApertura, horaCierre, capacidad, imagenUrl, descripcion)) {
+            // --- NUEVO: RECOGER LOS BENEFICIOS DEL FORMULARIO ---
+            String[] arrBeneficios = request.getParameterValues("beneficios");
+            String beneficiosUnidos = "";
+            if (arrBeneficios != null) {
+                beneficiosUnidos = String.join(",", arrBeneficios);
+            }
+            
+            // Pasamos 'beneficiosUnidos' al final del método
+            if (dao.actualizarSede(idSede, nombre, direccion, distrito, telefono, horaApertura, horaCierre, capacidad, imagenUrl, descripcion, beneficiosUnidos)) {
                 response.sendRedirect("AdminSedes?msg=editada");
             } else {
                 response.sendRedirect("AdminSedes?msg=error_editar");

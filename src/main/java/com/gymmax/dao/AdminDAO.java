@@ -253,5 +253,63 @@ public class AdminDAO {
 
         return exito;
     }
+    // =========================================================
+    // REPORTE: INGRESOS POR SEDE
+    // =========================================================
+    public java.util.Map<String, Double> obtenerIngresosPorSede() {
+        java.util.Map<String, Double> mapa = new java.util.HashMap<>();
+        String sql = "SELECT se.nombre, SUM(p.monto) as total " +
+                     "FROM PAGO p " +
+                     "INNER JOIN MEMBRESIA m ON p.id_membresia = m.id_membresia " +
+                     "INNER JOIN SOCIO s ON m.id_socio = s.id_socio " +
+                     "INNER JOIN SEDE se ON s.id_sede_principal = se.id_sede " +
+                     "WHERE p.estado = 'OK' AND MONTH(p.fecha_pago) = MONTH(CURDATE()) " +
+                     "GROUP BY se.nombre";
+                     
+        try (java.sql.Connection con = com.gymmax.config.ConexionDB.getConexion();
+             java.sql.PreparedStatement ps = con.prepareStatement(sql);
+             java.sql.ResultSet rs = ps.executeQuery()) {
+             
+            while (rs.next()) {
+                mapa.put(rs.getString("nombre"), rs.getDouble("total"));
+            }
+        } catch (Exception e) {
+            System.out.println("Error en ingresos por sede: " + e.getMessage());
+        }
+        return mapa;
+    }
+
+   // =========================================================
+    // DASHBOARD: MEMBRESÍAS POR VENCER (Próximos 7 días)
+    // =========================================================
+    public java.util.List<java.util.Map<String, String>> listarMembresiasPorVencer() {
+        java.util.List<java.util.Map<String, String>> lista = new java.util.ArrayList<>();
+        // Agregamos u.correo a la consulta
+        String sql = "SELECT u.nombres, u.apellidos, u.correo, p.nombre as plan, m.fecha_fin, DATEDIFF(m.fecha_fin, CURDATE()) as dias " +
+                     "FROM MEMBRESIA m " +
+                     "INNER JOIN SOCIO s ON m.id_socio = s.id_socio " +
+                     "INNER JOIN USUARIO u ON s.id_usuario = u.id_usuario " +
+                     "INNER JOIN PLAN p ON m.id_plan = p.id_plan " +
+                     "WHERE m.estado = 'ACT' AND DATEDIFF(m.fecha_fin, CURDATE()) BETWEEN 0 AND 7 " +
+                     "ORDER BY dias ASC";
+                     
+        try (java.sql.Connection con = com.gymmax.config.ConexionDB.getConexion();
+             java.sql.PreparedStatement ps = con.prepareStatement(sql);
+             java.sql.ResultSet rs = ps.executeQuery()) {
+             
+            while (rs.next()) {
+                java.util.Map<String, String> map = new java.util.HashMap<>();
+                map.put("socio", rs.getString("nombres") + " " + rs.getString("apellidos"));
+                map.put("correo", rs.getString("correo")); // Guardamos el correo
+                map.put("plan", rs.getString("plan"));
+                map.put("fecha_fin", rs.getString("fecha_fin"));
+                map.put("dias", String.valueOf(rs.getInt("dias")));
+                lista.add(map);
+            }
+        } catch (Exception e) {
+            System.out.println("Error listando vencimientos: " + e.getMessage());
+        }
+        return lista;
+    }
     
 }

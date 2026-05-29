@@ -37,6 +37,9 @@
                             <li class="nav-item">
                                 <a class="nav-link text-white" href="${pageContext.request.contextPath}/MisReservas"><i class="fa-solid fa-list-check me-2"></i> Mis Reservas</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-white" href="${pageContext.request.contextPath}/MisPagos"><i class="fa-solid fa-file-invoice-dollar me-2"></i> Mis Pagos</a>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -180,5 +183,39 @@
         </script>
         <% session.removeAttribute("alertaSedeActualizada"); %>
     </c:if>
+       <c:if test="${not empty infoMembresia}">
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                // Obtenemos la fecha de vencimiento que ya tienes en la vista
+                const fechaFin = new Date('${infoMembresia.fin}');
+                const fechaHoy = new Date();
+                
+                // Calculamos la diferencia en días
+                const diferenciaTiempo = fechaFin.getTime() - fechaHoy.getTime();
+                const diasRestantes = Math.ceil(diferenciaTiempo / (1000 * 3600 * 24));
+
+                // Si le quedan 7 días o menos, disparamos la alerta automáticamente
+                if (diasRestantes <= 7 && diasRestantes >= 0) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: '¡Tu membresía está por vencer!',
+                        text: diasRestantes === 0 ? 'Tu plan vence el día de HOY.' : 'Te quedan ' + diasRestantes + ' días de membresía.',
+                        background: '#1a1a1a',
+                        color: '#ffffff',
+                        confirmButtonColor: '#FFD700',
+                        confirmButtonText: 'Renovar ahora',
+                        showCancelButton: true,
+                        cancelButtonText: 'Recordarme luego',
+                        cancelButtonColor: '#333'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = '${pageContext.request.contextPath}/Gimnasios';
+                        }
+                    });
+                }
+            });
+        </script>
+    </c:if> 
+        
     </body>
 </html>

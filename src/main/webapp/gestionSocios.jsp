@@ -46,8 +46,7 @@
         <ul class="admin-nav">
             <li><a class="nav-link text-white" href="${pageContext.request.contextPath}/AdminDashboard">
                     <i class="fa-solid fa-chart-line me-2"></i> Panel de Control</a></li>
-            <li><a class="nav-link text-white" href="${pageContext.request.contextPath}/AdminSocios">
-                    <i class="fa-solid fa-users me-2"></i> Socios</a></li>
+            <li><a class="nav-link text-dark bg-warning fw-bold rounded px-3 py-2 shadow-sm" href="${pageContext.request.contextPath}/AdminSocios"><i class="fa-solid fa-users me-2"></i> Socios</a></li>
             <li><a class="nav-link text-white" href="${pageContext.request.contextPath}/AdminSedes">
                     <i class="fa-solid fa-location-dot me-2"></i> Sedes</a></li>
             <li><a class="nav-link text-white" href="${pageContext.request.contextPath}/AdminMembresias">

@@ -15,7 +15,7 @@ public class SedeDAO {
     // =========================================================
     public List<Sede> listarSedes() {
         List<Sede> lista = new ArrayList<>();
-        String sql = "SELECT id_sede, nombre, direccion, distrito, telefono, hora_apertura, hora_cierre, capacidad, imagen_url, descripcion FROM SEDE";
+        String sql = "SELECT id_sede, nombre, direccion, distrito, telefono, hora_apertura, hora_cierre, capacidad, imagen_url, descripcion, beneficios FROM SEDE";
 
         try (Connection con = ConexionDB.getConexion();
              PreparedStatement ps = con.prepareStatement(sql);
@@ -35,7 +35,7 @@ public class SedeDAO {
     // =========================================================
     public List<Sede> buscarSedes(String texto) {
         List<Sede> lista = new ArrayList<>();
-        String sql = "SELECT id_sede, nombre, direccion, distrito, telefono, hora_apertura, hora_cierre, capacidad, imagen_url, descripcion " +
+        String sql = "SELECT id_sede, nombre, direccion, distrito, telefono, hora_apertura, hora_cierre, capacidad, imagen_url, descripcion, beneficios " +
                      "FROM SEDE WHERE nombre LIKE ? OR distrito LIKE ?";
 
         try (Connection con = ConexionDB.getConexion();
@@ -61,7 +61,8 @@ public class SedeDAO {
     // =========================================================
     public Sede obtenerSedePorId(int id) {
         Sede sede = null;
-        String sql = "SELECT id_sede, nombre, direccion, distrito, telefono, hora_apertura, hora_cierre, capacidad, imagen_url, descripcion FROM SEDE WHERE id_sede = ?";
+        String sql = "SELECT id_sede, nombre, direccion, distrito, telefono, hora_apertura, hora_cierre, capacidad, imagen_url, descripcion, beneficios " +
+                     "FROM SEDE WHERE id_sede = ?";
 
         try (Connection con = ConexionDB.getConexion();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -79,14 +80,14 @@ public class SedeDAO {
     }
 
     // =========================================================
-    // REGISTRAR NUEVA SEDE (ADMIN)
+    // REGISTRAR NUEVA SEDE (ADMIN) - ¡CORREGIDO! (10 PARÁMETROS)
     // =========================================================
     public boolean registrarSede(String nombre, String direccion, String distrito, String telefono, 
                                  String horaApertura, String horaCierre, int capacidad, 
-                                 String imagenUrl, String descripcion) {
+                                 String imagenUrl, String descripcion, String beneficios) {
         boolean exito = false;
-        String sql = "INSERT INTO SEDE (nombre, direccion, distrito, telefono, hora_apertura, hora_cierre, capacidad, imagen_url, descripcion) " +
-                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO SEDE (nombre, direccion, distrito, telefono, hora_apertura, hora_cierre, capacidad, imagen_url, descripcion, beneficios) " +
+                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection con = ConexionDB.getConexion();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -95,12 +96,12 @@ public class SedeDAO {
             ps.setString(2, direccion);
             ps.setString(3, distrito);
             ps.setString(4, telefono);
-            // Convertimos la hora HH:mm que manda el formulario HTML a formato SQL HH:mm:ss
             ps.setString(5, horaApertura.length() == 5 ? horaApertura + ":00" : horaApertura);
             ps.setString(6, horaCierre.length() == 5 ? horaCierre + ":00" : horaCierre);
             ps.setInt(7, capacidad);
             ps.setString(8, imagenUrl);
             ps.setString(9, descripcion);
+            ps.setString(10, beneficios); // Guardamos la cadena de casillas
 
             if (ps.executeUpdate() > 0) {
                 exito = true;
@@ -112,14 +113,14 @@ public class SedeDAO {
     }
 
     // =========================================================
-    // ACTUALIZAR SEDE (ADMIN)
+    // ACTUALIZAR SEDE (ADMIN) - ¡CORREGIDO! (11 PARÁMETROS)
     // =========================================================
     public boolean actualizarSede(int idSede, String nombre, String direccion, String distrito, String telefono, 
                                   String horaApertura, String horaCierre, int capacidad, 
-                                  String imagenUrl, String descripcion) {
+                                  String imagenUrl, String descripcion, String beneficios) {
         boolean exito = false;
         String sql = "UPDATE SEDE SET nombre=?, direccion=?, distrito=?, telefono=?, hora_apertura=?, " +
-                     "hora_cierre=?, capacidad=?, imagen_url=?, descripcion=? WHERE id_sede=?";
+                     "hora_cierre=?, capacidad=?, imagen_url=?, descripcion=?, beneficios=? WHERE id_sede=?";
 
         try (Connection con = ConexionDB.getConexion();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -133,7 +134,8 @@ public class SedeDAO {
             ps.setInt(7, capacidad);
             ps.setString(8, imagenUrl);
             ps.setString(9, descripcion);
-            ps.setInt(10, idSede);
+            ps.setString(10, beneficios); // Guardamos la cadena de casillas
+            ps.setInt(11, idSede);        // El ID pasa al lugar 11
 
             if (ps.executeUpdate() > 0) {
                 exito = true;
@@ -159,7 +161,6 @@ public class SedeDAO {
                 exito = true;
             }
         } catch (Exception e) {
-            // Saltará si la sede tiene socios, clases o asistencias vinculadas (Llave foránea)
             System.out.println("Error al eliminar sede (Posible FK): " + e.getMessage());
         }
         return exito;
@@ -180,6 +181,7 @@ public class SedeDAO {
         s.setCapacidad(rs.getInt("capacidad"));
         s.setImagenUrl(rs.getString("imagen_url"));
         s.setDescripcion(rs.getString("descripcion"));
+        s.setBeneficios(rs.getString("beneficios"));
         return s;
     }
 }

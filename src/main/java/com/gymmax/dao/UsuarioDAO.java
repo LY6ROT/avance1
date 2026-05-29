@@ -175,4 +175,43 @@ public class UsuarioDAO {
         }
         return datos;
     }
+    // =========================================================
+    // VERIFICAR SI EL CORREO EXISTE
+    // =========================================================
+    public boolean existeCorreo(String correo) {
+        boolean existe = false;
+        String sql = "SELECT id_usuario FROM USUARIO WHERE correo = ?";
+        try (java.sql.Connection con = com.gymmax.config.ConexionDB.getConexion();
+             java.sql.PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, correo);
+            try (java.sql.ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    existe = true;
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Error al verificar correo: " + e.getMessage());
+        }
+        return existe;
+    }
+
+    // =========================================================
+    // ACTUALIZAR CONTRASEÑA POR CORREO
+    // =========================================================
+    public boolean actualizarPasswordPorCorreo(String correo, String nuevaPassword) {
+        boolean exito = false;
+        // Asumiendo que tu columna se llama 'password' o 'clave'. Ajusta si se llama distinto.
+        String sql = "UPDATE USUARIO SET password = ? WHERE correo = ?";
+        try (java.sql.Connection con = com.gymmax.config.ConexionDB.getConexion();
+             java.sql.PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, nuevaPassword);
+            ps.setString(2, correo);
+            if (ps.executeUpdate() > 0) {
+                exito = true;
+            }
+        } catch (Exception e) {
+            System.out.println("Error al actualizar contraseña: " + e.getMessage());
+        }
+        return exito;
+    }
 }

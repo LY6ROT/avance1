@@ -110,7 +110,8 @@
                                             data-telefono="<%= s.getTelefono() %>" data-apertura="<%= s.getHoraApertura().toString().substring(0,5) %>"
                                             data-cierre="<%= s.getHoraCierre().toString().substring(0,5) %>" data-capacidad="<%= s.getCapacidad() %>"
                                             data-img="<%= s.getImagenUrl() != null ? s.getImagenUrl() : "" %>"
-                                            data-desc="<%= s.getDescripcion() != null ? s.getDescripcion() : "" %>">
+                                            data-desc="<%= s.getDescripcion() != null ? s.getDescripcion() : "" %>"
+                                            data-ben="<%= s.getBeneficios() != null ? s.getBeneficios() : "" %>">
                                         <i class="fa-solid fa-pen-to-square text-dark"></i>
                                     </button>
                                     <form action="${pageContext.request.contextPath}/AdminSedes" method="POST" class="d-inline" onsubmit="return confirm('¿Eliminar esta sede?');">
@@ -150,10 +151,26 @@
                             <div class="col-12"><label class="form-label small fw-bold">URL Imagen</label><input type="url" name="imagenUrl" class="form-control"></div>
                             <div class="col-12"><label class="form-label small fw-bold">Descripción</label><textarea name="descripcion" class="form-control" rows="2"></textarea></div>
                         </div>
+
+                        <div class="mt-4 pt-3 border-top border-secondary">
+                            <label class="form-label small fw-bold mb-3">Beneficios del Gimnasio (Selecciona los que apliquen)</label>
+                            <div class="row g-2 px-2">
+                                <div class="col-6 col-md-4"><div class="form-check"><input class="form-check-input" type="checkbox" name="beneficios" value="Peso Libre" id="n_b1"><label class="form-check-label small" for="n_b1">Peso Libre</label></div></div>
+                                <div class="col-6 col-md-4"><div class="form-check"><input class="form-check-input" type="checkbox" name="beneficios" value="Cardio" id="n_b2"><label class="form-check-label small" for="n_b2">Cardio</label></div></div>
+                                <div class="col-6 col-md-4"><div class="form-check"><input class="form-check-input" type="checkbox" name="beneficios" value="Duchas" id="n_b3"><label class="form-check-label small" for="n_b3">Duchas</label></div></div>
+                                <div class="col-6 col-md-4"><div class="form-check"><input class="form-check-input" type="checkbox" name="beneficios" value="Wifi Gratis" id="n_b4"><label class="form-check-label small" for="n_b4">Wifi Gratis</label></div></div>
+                                <div class="col-6 col-md-4"><div class="form-check"><input class="form-check-input" type="checkbox" name="beneficios" value="Piscina" id="n_b5"><label class="form-check-label small" for="n_b5">Piscina</label></div></div>
+                                <div class="col-6 col-md-4"><div class="form-check"><input class="form-check-input" type="checkbox" name="beneficios" value="Sauna" id="n_b6"><label class="form-check-label small" for="n_b6">Sauna</label></div></div>
+                                <div class="col-6 col-md-4"><div class="form-check"><input class="form-check-input" type="checkbox" name="beneficios" value="Zona Kids" id="n_b7"><label class="form-check-label small" for="n_b7">Zona Kids</label></div></div>
+                                <div class="col-6 col-md-4"><div class="form-check"><input class="form-check-input" type="checkbox" name="beneficios" value="Parking Gratis" id="n_b8"><label class="form-check-label small" for="n_b8">Parking Gratis</label></div></div>
+                                <div class="col-6 col-md-4"><div class="form-check"><input class="form-check-input" type="checkbox" name="beneficios" value="Spinning" id="n_b9"><label class="form-check-label small" for="n_b9">Spinning</label></div></div>
+                                <div class="col-6 col-md-4"><div class="form-check"><input class="form-check-input" type="checkbox" name="beneficios" value="Baile Fitness" id="n_b10"><label class="form-check-label small" for="n_b10">Baile Fitness</label></div></div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="modal-footer bg-light">
+                    <div class="modal-footer bg-light border-top-0">
                         <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill px-3" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-sm btn-warning fw-bold rounded-pill px-4">Guardar</button>
+                        <button type="submit" class="btn btn-sm btn-warning fw-bold text-dark rounded-pill px-4">Guardar</button>
                     </div>
                 </form>
             </div>
@@ -182,10 +199,26 @@
                             <div class="col-12"><label class="form-label small fw-bold">URL Imagen</label><input type="url" name="imagenUrl" id="edit_img" class="form-control"></div>
                             <div class="col-12"><label class="form-label small fw-bold">Descripción</label><textarea name="descripcion" id="edit_desc" class="form-control" rows="2"></textarea></div>
                         </div>
+
+                        <div class="mt-4 pt-3 border-top border-secondary">
+                            <label class="form-label small fw-bold mb-3">Beneficios del Gimnasio (Selecciona los que apliquen)</label>
+                            <div class="row g-2 px-2">
+                                <div class="col-6 col-md-4"><div class="form-check"><input class="form-check-input ben-check" type="checkbox" name="beneficios" value="Peso Libre" id="e_b1"><label class="form-check-label small" for="e_b1">Peso Libre</label></div></div>
+                                <div class="col-6 col-md-4"><div class="form-check"><input class="form-check-input ben-check" type="checkbox" name="beneficios" value="Cardio" id="e_b2"><label class="form-check-label small" for="e_b2">Cardio</label></div></div>
+                                <div class="col-6 col-md-4"><div class="form-check"><input class="form-check-input ben-check" type="checkbox" name="beneficios" value="Duchas" id="e_b3"><label class="form-check-label small" for="e_b3">Duchas</label></div></div>
+                                <div class="col-6 col-md-4"><div class="form-check"><input class="form-check-input ben-check" type="checkbox" name="beneficios" value="Wifi Gratis" id="e_b4"><label class="form-check-label small" for="e_b4">Wifi Gratis</label></div></div>
+                                <div class="col-6 col-md-4"><div class="form-check"><input class="form-check-input ben-check" type="checkbox" name="beneficios" value="Piscina" id="e_b5"><label class="form-check-label small" for="e_b5">Piscina</label></div></div>
+                                <div class="col-6 col-md-4"><div class="form-check"><input class="form-check-input ben-check" type="checkbox" name="beneficios" value="Sauna" id="e_b6"><label class="form-check-label small" for="e_b6">Sauna</label></div></div>
+                                <div class="col-6 col-md-4"><div class="form-check"><input class="form-check-input ben-check" type="checkbox" name="beneficios" value="Zona Kids" id="e_b7"><label class="form-check-label small" for="e_b7">Zona Kids</label></div></div>
+                                <div class="col-6 col-md-4"><div class="form-check"><input class="form-check-input ben-check" type="checkbox" name="beneficios" value="Parking Gratis" id="e_b8"><label class="form-check-label small" for="e_b8">Parking Gratis</label></div></div>
+                                <div class="col-6 col-md-4"><div class="form-check"><input class="form-check-input ben-check" type="checkbox" name="beneficios" value="Spinning" id="e_b9"><label class="form-check-label small" for="e_b9">Spinning</label></div></div>
+                                <div class="col-6 col-md-4"><div class="form-check"><input class="form-check-input ben-check" type="checkbox" name="beneficios" value="Baile Fitness" id="e_b10"><label class="form-check-label small" for="e_b10">Baile Fitness</label></div></div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="modal-footer bg-light">
+                    <div class="modal-footer bg-light border-top-0">
                         <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill px-3" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-sm btn-warning fw-bold rounded-pill px-4">Actualizar</button>
+                        <button type="submit" class="btn btn-sm btn-warning fw-bold text-dark rounded-pill px-4">Actualizar</button>
                     </div>
                 </form>
             </div>
@@ -205,6 +238,22 @@
                 document.getElementById('edit_capacidad').value = this.getAttribute('data-capacidad');
                 document.getElementById('edit_img').value = this.getAttribute('data-img');
                 document.getElementById('edit_desc').value = this.getAttribute('data-desc');
+                
+                // --- LÓGICA DE BENEFICIOS REFORZADA ---
+                const beneficiosStr = this.getAttribute('data-ben');
+                
+                // 1. Desmarcamos todos
+                document.querySelectorAll('.ben-check').forEach(chk => chk.checked = false);
+                
+                // 2. Marcamos los que coincidan
+                if (beneficiosStr && beneficiosStr.trim() !== '') {
+                    const arrBen = beneficiosStr.split(',').map(b => b.trim());
+                    document.querySelectorAll('.ben-check').forEach(chk => {
+                        if (arrBen.includes(chk.value)) {
+                            chk.checked = true;
+                        }
+                    });
+                }
             });
         });
     </script>

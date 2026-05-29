@@ -69,40 +69,16 @@
             </div>
         </section>
 
-        <section class="fondo2" style="background-color: #050505; padding-top: 40px;">
-            <div class="container text-center">
-                <h2 class="titulo-seccion mb-5">LÍDERES GYMMAX</h2>
-                
-                <div class="row justify-content-center g-4">
-                    <div class="col-md-4">
-                        <div class="equipo-card">
-                            <div class="equipo-img-container">
-                                <img src="https://scontent-lim1-1.xx.fbcdn.net/v/t39.30808-1/505586514_4083602051920948_1622992285524663566_n.jpg?stp=c0.0.869.869a_dst-jpg_s200x200_tt6&_nc_cat=102&ccb=1-7&_nc_sid=1d2534&_nc_eui2=AeHNXJOpbK7Wly8wF_dW6OvBMbtKlYaqPcQxu0qVhqo9xJFO3tBk9AwAQMlVnPUiEvX4uyd1JC5I8msbsNX3EThE&_nc_ohc=mvAy1WmvdUUQ7kNvwHAQsJE&_nc_oc=AdpPHAb1bR8vonzWgpkDw7aTo5mspqU_QV5Pj848hLltBStXe1jcfh09KESgtMv-Qwk&_nc_zt=24&_nc_ht=scontent-lim1-1.xx&_nc_gid=QUwMr7CQrfUHxw1TIOK7Lw&_nc_ss=7a3a8&oh=00_Af06KZEOeJcRMnTSnMf8BvkpAYblCswek-gnljjrcmMh8g&oe=69E62487" alt="Oliver Torre" class="equipo-img">
-                            </div>
-                            <h3 class="pf_titulo mt-4 mb-1">OLIVER TORRE E.</h3>
-                            <p class="text-warning fw-bold mb-3">CEO & Lead Engineer</p>
-                            <p class="parrafo_1 small">Desarrollador de la arquitectura digital de GymMax y visionario de la marca. Estudiante destacado de la UTP.</p>
-                            <div class="equipo-redes">
-                                <a href="#"><i class="fa-brands fa-linkedin"></i></a>
-                                <a href="#"><i class="fa-brands fa-github"></i></a>
-                            </div>
-                        </div>
-                    </div>
-
-
-                </div>
-            </div>
-        </section>
     </main>
 
     <footer class="fondo_pie">
         <div class="container text-center">
             <p class="text-white mb-2">Visita nuestras redes sociales.</p>
             <div class="contenedor-redes">
-                <a href="#"><i class="fa-brands fa-facebook"></i></a>
-                <a href="#"><i class="fa-brands fa-whatsapp"></i></a>
+                <a href="https://www.facebook.com/" target="_blank"><i class="fa-brands fa-facebook"></i></a>
+                <a href="https://www.whatsapp.com/" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
             </div>
-            <p class="copyright">© 2026 GymMax. Oliver Torre Escobar - UTP</p>
+            <p class="copyright">© 2026 GymMax. Todos los derechos reservados.</p>
         </div>
     </footer>
 

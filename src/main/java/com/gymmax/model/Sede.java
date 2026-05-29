@@ -3,6 +3,7 @@ package com.gymmax.model;
 import java.sql.Time;
 
 public class Sede {
+
     private int idSede;
     private String nombre;
     private String direccion;
@@ -13,6 +14,7 @@ public class Sede {
     private int capacidad;
     private String imagenUrl;
     private String descripcion;
+    private String beneficios;
 
     public Sede() {
     }
@@ -31,33 +33,89 @@ public class Sede {
     }
 
     // Getters y Setters Completos
-    public int getIdSede() { return idSede; }
-    public void setIdSede(int idSede) { this.idSede = idSede; }
+    public int getIdSede() {
+        return idSede;
+    }
 
-    public String getNombre() { return nombre; }
-    public void setNombre(String nombre) { this.nombre = nombre; }
+    public void setIdSede(int idSede) {
+        this.idSede = idSede;
+    }
 
-    public String getDireccion() { return direccion; }
-    public void setDireccion(String direccion) { this.direccion = direccion; }
+    public String getNombre() {
+        return nombre;
+    }
 
-    public String getDistrito() { return distrito; }
-    public void setDistrito(String distrito) { this.distrito = distrito; }
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
 
-    public String getTelefono() { return telefono; }
-    public void setTelefono(String telefono) { this.telefono = telefono; }
+    public String getDireccion() {
+        return direccion;
+    }
 
-    public Time getHoraApertura() { return horaApertura; }
-    public void setHoraApertura(Time horaApertura) { this.horaApertura = horaApertura; }
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
 
-    public Time getHoraCierre() { return horaCierre; }
-    public void setHoraCierre(Time horaCierre) { this.horaCierre = horaCierre; }
+    public String getDistrito() {
+        return distrito;
+    }
 
-    public int getCapacidad() { return capacidad; }
-    public void setCapacidad(int capacidad) { this.capacidad = capacidad; }
+    public void setDistrito(String distrito) {
+        this.distrito = distrito;
+    }
 
-    public String getImagenUrl() { return imagenUrl; }
-    public void setImagenUrl(String imagenUrl) { this.imagenUrl = imagenUrl; }
+    public String getTelefono() {
+        return telefono;
+    }
 
-    public String getDescripcion() { return descripcion; }
-    public void setDescripcion(String descripcion) { this.descripcion = descripcion; }
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    public Time getHoraApertura() {
+        return horaApertura;
+    }
+
+    public void setHoraApertura(Time horaApertura) {
+        this.horaApertura = horaApertura;
+    }
+
+    public Time getHoraCierre() {
+        return horaCierre;
+    }
+
+    public void setHoraCierre(Time horaCierre) {
+        this.horaCierre = horaCierre;
+    }
+
+    public int getCapacidad() {
+        return capacidad;
+    }
+
+    public void setCapacidad(int capacidad) {
+        this.capacidad = capacidad;
+    }
+
+    public String getImagenUrl() {
+        return imagenUrl;
+    }
+
+    public void setImagenUrl(String imagenUrl) {
+        this.imagenUrl = imagenUrl;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+    public String getBeneficios() {
+        return beneficios;
+    }
+    public void setBeneficios(String beneficios) {
+        this.beneficios = beneficios;
+    }
 }

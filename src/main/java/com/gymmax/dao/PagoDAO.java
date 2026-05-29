@@ -103,56 +103,104 @@ public class PagoDAO {
         p.setEstado(rs.getString("estado"));
         return p;
     }
+   // =========================================================
+    // PROCESAR COMPRA (CORREGIDO: BUSCA EL ID_SOCIO REAL)
     // =========================================================
-    // PROCESAR COMPRA (REQUERIDO POR PAGOSERVLET / CARRITO)
-    // =========================================================
-    public boolean procesarCompra(int idSocio, int idPlan, double monto, int duracionDias) {
+    public boolean procesarCompra(int idUsuario, int idPlan, double monto, int duracionDias, String metodoPago) {
         boolean exito = false;
         
-        // Consultas para la transacción (insertar membresía y luego el pago)
+        // 1. Consulta para encontrar el id_socio basado en el usuario logueado
+        String sqlBuscarSocio = "SELECT id_socio FROM SOCIO WHERE id_usuario = ?";
+        
         String sqlMembresia = "INSERT INTO MEMBRESIA (id_socio, id_plan, fecha_inicio, fecha_fin, estado, monto) " +
                               "VALUES (?, ?, CURDATE(), DATE_ADD(CURDATE(), INTERVAL ? DAY), 'ACT', ?)";
+        
         String sqlPago = "INSERT INTO PAGO (id_membresia, monto, metodo, nro_operacion, estado) " +
-                         "VALUES (?, ?, 'WEB', 'ONLINE', 'OK')";
+                         "VALUES (?, ?, ?, 'ONLINE', 'OK')";
 
         try (Connection con = ConexionDB.getConexion()) {
-            // Iniciamos transacción
             con.setAutoCommit(false);
             
-            try (PreparedStatement psMem = con.prepareStatement(sqlMembresia, PreparedStatement.RETURN_GENERATED_KEYS)) {
-                psMem.setInt(1, idSocio);
-                psMem.setInt(2, idPlan);
-                psMem.setInt(3, duracionDias);
-                psMem.setDouble(4, monto);
-                
-                if (psMem.executeUpdate() > 0) {
-                    try (ResultSet rs = psMem.getGeneratedKeys()) {
-                        if (rs.next()) {
-                            int idMembresia = rs.getInt(1);
-                            
-                            // Insertamos el recibo de pago vinculado a la membresía
-                            try (PreparedStatement psPago = con.prepareStatement(sqlPago)) {
-                                psPago.setInt(1, idMembresia);
-                                psPago.setDouble(2, monto);
-                                psPago.executeUpdate();
+            int idSocio = 0;
+            
+            // Paso A: Obtener el ID de Socio real
+            try (PreparedStatement psBuscar = con.prepareStatement(sqlBuscarSocio)) {
+                psBuscar.setInt(1, idUsuario);
+                try (ResultSet rsSocio = psBuscar.executeQuery()) {
+                    if (rsSocio.next()) {
+                        idSocio = rsSocio.getInt("id_socio");
+                    }
+                }
+            }
+
+            // Paso B: Si existe el socio, procedemos con la compra
+            if (idSocio > 0) {
+                try (PreparedStatement psMem = con.prepareStatement(sqlMembresia, PreparedStatement.RETURN_GENERATED_KEYS)) {
+                    psMem.setInt(1, idSocio); // Pasamos el id_socio correcto
+                    psMem.setInt(2, idPlan);
+                    psMem.setInt(3, duracionDias);
+                    psMem.setDouble(4, monto);
+                    
+                    if (psMem.executeUpdate() > 0) {
+                        try (ResultSet rs = psMem.getGeneratedKeys()) {
+                            if (rs.next()) {
+                                int idMembresia = rs.getInt(1);
+                                
+                                try (PreparedStatement psPago = con.prepareStatement(sqlPago)) {
+                                    psPago.setInt(1, idMembresia);
+                                    psPago.setDouble(2, monto);
+                                    psPago.setString(3, metodoPago); // YAPE, PLIN o TARJETA
+                                    psPago.executeUpdate();
+                                }
                             }
                         }
                     }
+                    con.commit(); // Todo salió bien, guardamos
+                    exito = true;
+                    
+                } catch (Exception e) {
+                    con.rollback(); // Falló algo, revertimos todo
+                    System.err.println("Error en transacción SQL: " + e.getMessage());
+                    e.printStackTrace();
                 }
-                
-                // Confirmamos la transacción
-                con.commit();
-                exito = true;
-                
-            } catch (Exception e) {
-                con.rollback(); // Si algo falla, deshacemos todo para no cobrar sin dar membresía
-                System.out.println("Error en transacción de compra: " + e.getMessage());
+            } else {
+                System.err.println("ERROR: No se encontró un id_socio para el id_usuario: " + idUsuario);
             }
             
         } catch (Exception e) {
-            System.out.println("Error al procesar la compra: " + e.getMessage());
+            System.err.println("Error de conexión al procesar compra: " + e.getMessage());
+            e.printStackTrace();
         }
         
         return exito;
+    }
+    // =========================================================
+    // HISTORIAL DE PAGOS DE UN SOCIO ESPECÍFICO (CLIENTE)
+    // =========================================================
+    public List<PagoDTO> listarPagosPorUsuario(int idUsuario) {
+        List<PagoDTO> lista = new ArrayList<>();
+        String sql = "SELECT p.id_pago, CONCAT(u.nombres, ' ', u.apellidos) AS socio, pl.nombre AS plan, " +
+                     "p.monto, p.metodo, p.nro_operacion, DATE_FORMAT(p.fecha_pago, '%d/%m/%Y %H:%i') AS fecha, p.estado " +
+                     "FROM PAGO p " +
+                     "INNER JOIN MEMBRESIA m ON p.id_membresia = m.id_membresia " +
+                     "INNER JOIN SOCIO s ON m.id_socio = s.id_socio " +
+                     "INNER JOIN USUARIO u ON s.id_usuario = u.id_usuario " +
+                     "INNER JOIN PLAN pl ON m.id_plan = pl.id_plan " +
+                     "WHERE u.id_usuario = ? " +
+                     "ORDER BY p.fecha_pago DESC";
+
+        try (Connection con = ConexionDB.getConexion();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+             
+            ps.setInt(1, idUsuario);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    lista.add(mapearPago(rs)); // Reutilizamos el helper que ya tenías
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Error al listar pagos de usuario: " + e.getMessage());
+        }
+        return lista;
     }
 }

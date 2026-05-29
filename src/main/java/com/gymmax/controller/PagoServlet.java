@@ -24,18 +24,24 @@ public class PagoServlet extends HttpServlet {
         Usuario usuario = (Usuario) session.getAttribute("usuarioSession");
         List<ItemCarrito> carrito = (List<ItemCarrito>) session.getAttribute("carrito");
         
-        // Verificamos que el usuario esté logueado y tenga items en el carrito
         if (usuario != null && carrito != null && !carrito.isEmpty()) {
+            
+            // Capturamos el método de pago elegido (TARJETA, YAPE, PLIN)
+            String metodoElegido = request.getParameter("metodoPago"); 
+            if (metodoElegido == null) metodoElegido = "WEB"; // Fallback por seguridad
+            
             PagoDAO pagoDAO = new PagoDAO();
             boolean exitoGlobal = true;
 
-            // Procesar la compra de cada plan agregado al carrito
             for (ItemCarrito item : carrito) {
+                // NOTA: Asegúrate de que el procesarCompra de tu DAO reciba 5 parámetros. 
+                // Si recibe 4, quita el 'metodoElegido' de aquí.
                 boolean exitoItem = pagoDAO.procesarCompra(
                         usuario.getIdUsuario(), 
                         item.getPlan().getIdPlan(), 
                         item.getSubtotal(), 
-                        item.getPlan().getDuracionDias()
+                        item.getPlan().getDuracionDias(),
+                        metodoElegido // <-- Se envía el método a la BD
                 );
                 if (!exitoItem) {
                     exitoGlobal = false;
@@ -43,7 +49,6 @@ public class PagoServlet extends HttpServlet {
             }
 
             if (exitoGlobal) {
-                // Si todo salió bien, vaciamos el carrito y mandamos al dashboard
                 session.removeAttribute("carrito");
                 response.sendRedirect("DashboardSocio?pago=exito");
             } else {

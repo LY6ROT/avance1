@@ -136,7 +136,7 @@
                 <a href="https://www.facebook.com/" target="_blank"><i class="fa-brands fa-facebook"></i></a>
                 <a href="https://www.whatsapp.com/" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
             </div>
-            <p class="copyright">© 2026 GymMax. Todos los derechos reservados. | Oliver Torre Escobar - UTP</p>
+            <p class="copyright">© 2026 GymMax. Todos los derechos reservados.</p>
         </div>
     </footer>
 

@@ -37,6 +37,9 @@
                             <li class="nav-item">
                                 <a class="nav-link text-white" href="${pageContext.request.contextPath}/MisReservas"><i class="fa-solid fa-list-check me-2"></i> Mis Reservas</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-white" href="${pageContext.request.contextPath}/MisPagos"><i class="fa-solid fa-file-invoice-dollar me-2"></i> Mis Pagos</a>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -122,21 +125,21 @@
 
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <c:if test="${param.error == 'sedepredeterminada'}">
-        <script>
-            document.addEventListener("DOMContentLoaded", function() {
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Sede Predeterminada',
-                    text: 'No se puede reservar en la sede predeterminada que tienes.',
-                    background: '#1a1a1a',
-                    color: '#ffffff',
-                    confirmButtonColor: '#FFA500',
-                    confirmButtonText: 'Entendido',
-                    iconColor: '#FFA500'
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Sede Predeterminada',
+                        text: 'No se puede reservar en la sede predeterminada que tienes.',
+                        background: '#1a1a1a',
+                        color: '#ffffff',
+                        confirmButtonColor: '#FFA500',
+                        confirmButtonText: 'Entendido',
+                        iconColor: '#FFA500'
+                    });
                 });
-            });
-        </script>
-    </c:if>
+            </script>
+        </c:if>
         <c:if test="${param.error == 'limite'}">
             <script>
                 document.addEventListener("DOMContentLoaded", function () {
